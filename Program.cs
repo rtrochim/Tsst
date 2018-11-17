@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace TSST
 {
@@ -10,8 +8,21 @@ namespace TSST
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello There");
+            List<Client> clients;
+            List<Node> nodes;
+            ManagementCenter managementCenter;
+            CableCloud cableCloud;
+
+            using (var p1 = new Process())
+            {
+                p1.StartInfo.FileName = null;
+            }
+
+
+
+            Console.WriteLine("I am Program");
             Console.ReadKey();
+
         }
     }
 }
