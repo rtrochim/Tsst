@@ -8,21 +8,29 @@ namespace TSST
     {
         static void Main(string[] args)
         {
-            List<Client> clients;
-            List<Node> nodes;
-            ManagementCenter managementCenter;
-            CableCloud cableCloud;
-
-            using (var p1 = new Process())
+            if (args == null || args.Length ==0)
             {
-                p1.StartInfo.FileName = null;
+                Console.WriteLine("I am Program");
+
+                List<Client> clients;
+                List<Node> nodes;
+                ManagementCenter managementCenter;
+                CableCloud cableCloud;
+
+
+                Process process = new Process();
+                process.StartInfo.FileName = "TSST.exe";
+                process.StartInfo.Arguments = "-n";
+                process.Start();
+
+
+                Console.ReadKey();
             }
-
-
-
-            Console.WriteLine("I am Program");
-            Console.ReadKey();
-
+            else if (args.Length!=0)
+            {
+                Console.WriteLine("I am Child");
+                Console.ReadKey();
+            }
         }
     }
 }
