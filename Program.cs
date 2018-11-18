@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Text;
 
 namespace TSST
 {
@@ -10,31 +12,19 @@ namespace TSST
         {
             if (args == null || args.Length ==0)
             {
-                Console.WriteLine("I am Program");
+                List<Process> processes = new List<Process>();
+                Console.WriteLine("I am Main Program");
+                string[] programConfig = File.ReadAllLines("Program.conf", Encoding.UTF8);
 
-                List<Client> clients;
-                List<Node> nodes;
-
-
-                Process process1 = new Process();
-                process1.StartInfo.FileName = "TSST.exe";
-                process1.StartInfo.Arguments = "-CC";
-                process1.Start();
-
-                Process process2 = new Process();
-                process2.StartInfo.FileName = "TSST.exe";
-                process2.StartInfo.Arguments = "-MC";
-                process2.Start();
-
-                Process process3 = new Process();
-                process3.StartInfo.FileName = "TSST.exe";
-                process3.StartInfo.Arguments = "-N";
-                process3.Start();
-
-                Process process4 = new Process();
-                process4.StartInfo.FileName = "TSST.exe";
-                process4.StartInfo.Arguments = "-C";
-                process4.Start();
+                foreach (string line in programConfig)
+                {
+                    string[] config = line.Split(null);
+                    Process p = new Process();
+                    processes.Add(p);
+                    p.StartInfo.FileName = "TSST.exe";
+                    p.StartInfo.Arguments = config[1];
+                    p.Start();
+                }
 
                 Console.ReadKey();
             }
@@ -52,13 +42,13 @@ namespace TSST
             }
             else if (args[0] == "-N")
             {
-                Node node;
+                Node node = new Node();
                 Console.WriteLine("I am Node");
                 Console.ReadKey();
             }
             else if (args[0] == "-C")
             {
-                Client client;
+                Client client = new Client();
                 Console.WriteLine("I am Client");
                 Console.ReadKey();
             }
