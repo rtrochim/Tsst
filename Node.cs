@@ -12,7 +12,7 @@ namespace TSST
 
         public void listeningThread()
         {
-            Console.WriteLine("I am listening");
+            Console.WriteLine("I am listening thread");
             this.listener = new ListenerSocket(11000);
         }
 
@@ -22,7 +22,6 @@ namespace TSST
             ThreadStart childref = new ThreadStart(listeningThread);
             Thread childThread = new Thread(childref);
             childThread.Start();
-            this.sender = new SenderSocket();
         }
     }
 }

@@ -17,9 +17,8 @@ namespace TSST
 
         public void listeningThread()
         {
-            Console.WriteLine("I am listening");
+            Console.WriteLine("I am listening thread");
             this.listener = new ListenerSocket(11001);
-
         }
 
         public Client()
@@ -29,6 +28,7 @@ namespace TSST
             Thread childThread = new Thread(childref);
             childThread.Start();
             this.sender = new SenderSocket();
+            this.sender.sendMessage("Hello world!<EOF>", 11000);
         }
     }
 }

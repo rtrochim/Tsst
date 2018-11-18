@@ -7,17 +7,25 @@ namespace TSST
 {
     public class SenderSocket
     {
+        public int port;
+        public SynchronousSocketClient socketClient;
         public SenderSocket()
         {
-            SynchronousSocketClient socketClient = new SynchronousSocketClient();
-            socketClient.StartClient();
+            this.socketClient = new SynchronousSocketClient();
+        }
+
+        public void sendMessage(string message, int port)
+        {
+            this.socketClient.SendMessage(message, port);
         }
     }
 
     public class SynchronousSocketClient
     {
+        Socket sender;
+        IPEndPoint remoteEP;
 
-        public void StartClient()
+        public void SendMessage(string message, int port)
         {
             // Data buffer for incoming data.  
             byte[] bytes = new byte[1024];
@@ -29,34 +37,33 @@ namespace TSST
                 // This example uses port 11000 on the local computer.  
                 IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
                 IPAddress ipAddress = ipHostInfo.AddressList[0];
-                IPEndPoint remoteEP = new IPEndPoint(ipAddress, 11000);
+                this.remoteEP = new IPEndPoint(ipAddress, port);
 
                 // Create a TCP/IP  socket.  
-                Socket sender = new Socket(ipAddress.AddressFamily,
+                this.sender = new Socket(ipAddress.AddressFamily,
                     SocketType.Stream, ProtocolType.Tcp);
-
                 // Connect the socket to the remote endpoint. Catch any errors.  
                 try
                 {
-                    sender.Connect(remoteEP);
+                    this.sender.Connect(this.remoteEP);
 
                     Console.WriteLine("Socket connected to {0}",
-                        sender.RemoteEndPoint.ToString());
+                        this.sender.RemoteEndPoint.ToString());
 
                     // Encode the data string into a byte array.  
-                    byte[] msg = Encoding.ASCII.GetBytes("Moja dupa wiadomosc <EOF>");
+                    byte[] msg = Encoding.ASCII.GetBytes(message);
 
                     // Send the data through the socket.  
-                    int bytesSent = sender.Send(msg);
+                    int bytesSent = this.sender.Send(msg);
 
                     // Receive the response from the remote device.  
-                    int bytesRec = sender.Receive(bytes);
+                    int bytesRec = this.sender.Receive(bytes);
                     Console.WriteLine("Echoed test = {0}",
                         Encoding.ASCII.GetString(bytes, 0, bytesRec));
 
                     // Release the socket.  
-                    sender.Shutdown(SocketShutdown.Both);
-                    sender.Close();
+                    this.sender.Shutdown(SocketShutdown.Both);
+                    this.sender.Close();
 
                 }
                 catch (ArgumentNullException ane)
