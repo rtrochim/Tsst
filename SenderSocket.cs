@@ -44,7 +44,7 @@ namespace TSST
                         sender.RemoteEndPoint.ToString());
 
                     // Encode the data string into a byte array.  
-                    byte[] msg = Encoding.ASCII.GetBytes("My message");
+                    byte[] msg = Encoding.ASCII.GetBytes("Moja dupa wiadomosc <EOF>");
 
                     // Send the data through the socket.  
                     int bytesSent = sender.Send(msg);
@@ -79,4 +79,6 @@ namespace TSST
             }
         }
     }
+
 }
+

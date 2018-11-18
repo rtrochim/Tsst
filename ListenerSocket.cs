@@ -11,38 +11,32 @@ namespace TSST
 {   
     public class ListenerSocket
     {
-        Socket socket;
         int port;
         public ListenerSocket(int port)
         {
             this.port = port;
             AsynchronousSocketListener listener = new AsynchronousSocketListener(this.port);
             listener.start();
-            this.socket = listener.socket;
         }
-
-        public Socket returnSocket()
-        {
-            return this.socket;
-        }
+        
     }
+    // State object for reading client data asynchronously  
     public class StateObject
     {
-        // Client socket.
+        // Client  socket.  
         public Socket workSocket = null;
-        // Size of receive buffer.
+        // Size of receive buffer.  
         public const int BufferSize = 1024;
-        //Receive buffer.
+        // Receive buffer.  
         public byte[] buffer = new byte[BufferSize];
-        //Received data string.
+        // Received data string.  
         public StringBuilder sb = new StringBuilder();
     }
 
     public class AsynchronousSocketListener
     {
-        public Socket socket;
-        public int port;
-        // Thread signal.
+        int port;
+        // Thread signal.  
         public static ManualResetEvent allDone = new ManualResetEvent(false);
 
         public AsynchronousSocketListener(int port)
@@ -52,19 +46,18 @@ namespace TSST
 
         public void StartListening()
         {
-            Console.WriteLine("Listening on port: {0}", this.port);
-            // Establish the local endpoint for the socket.
-            // The DNS name of the computer
-            // running the listener is ?? localhost ??
+            // Establish the local endpoint for the socket.  
+            // The DNS name of the computer  
+            // running the listener is "host.contoso.com".  
             IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
             IPAddress ipAddress = ipHostInfo.AddressList[0];
             IPEndPoint localEndPoint = new IPEndPoint(ipAddress, this.port);
 
-            // Create a TCP/IP socket.
-            Socket listener = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-            this.socket = listener;
-            //Bind the socket to the local endpoint and listen for incoming connections
+            // Create a TCP/IP socket.  
+            Socket listener = new Socket(ipAddress.AddressFamily,
+                SocketType.Stream, ProtocolType.Tcp);
 
+            // Bind the socket to the local endpoint and listen for incoming connections.  
             try
             {
                 listener.Bind(localEndPoint);
@@ -72,24 +65,30 @@ namespace TSST
 
                 while (true)
                 {
-                    // Set the event to nonsignaled state.
+                    // Set the event to nonsignaled state.  
                     allDone.Reset();
 
-                    // Start an asynchronous socket to listen for connections.
+                    // Start an asynchronous socket to listen for connections.  
                     Console.WriteLine("Waiting for a connection...");
-                    listener.BeginAccept(new AsyncCallback(AcceptCallback), listener);
+                    listener.BeginAccept(
+                        new AsyncCallback(AcceptCallback),
+                        listener);
 
-                    // Wait until a connection is made before continuing.
+                    // Wait until a connection is made before continuing.  
                     allDone.WaitOne();
                 }
+
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
             }
+
             Console.WriteLine("\nPress ENTER to continue...");
             Console.Read();
+
         }
+
         public static void AcceptCallback(IAsyncResult ar)
         {
             // Signal the main thread to continue.  
@@ -131,7 +130,8 @@ namespace TSST
                 {
                     // All the data has been read from the   
                     // client. Display it on the console.  
-                    Console.WriteLine("Data : {0}", content);
+                    Console.WriteLine("Read {0} bytes from socket. \n Data : {1}",
+                        content.Length, content);
                     // Echo the data back to the client.  
                     Send(handler, content);
                 }

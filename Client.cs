@@ -28,9 +28,7 @@ namespace TSST
             ThreadStart childref = new ThreadStart(listeningThread);
             Thread childThread = new Thread(childref);
             childThread.Start();
-            Thread.Sleep(2000);
             this.sender = new SenderSocket();
-            //sender.sendMessage("My test message");
         }
     }
 }
