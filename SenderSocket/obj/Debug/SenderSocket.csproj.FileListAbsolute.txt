@@ -1,0 +1,5 @@
+C:\Users\Radek\Desktop\Visual\TSST\SenderSocket\bin\Debug\SenderSocket.dll
+C:\Users\Radek\Desktop\Visual\TSST\SenderSocket\bin\Debug\SenderSocket.pdb
+C:\Users\Radek\Desktop\Visual\TSST\SenderSocket\obj\Debug\SenderSocket.csprojResolveAssemblyReference.cache
+C:\Users\Radek\Desktop\Visual\TSST\SenderSocket\obj\Debug\SenderSocket.dll
+C:\Users\Radek\Desktop\Visual\TSST\SenderSocket\obj\Debug\SenderSocket.pdb

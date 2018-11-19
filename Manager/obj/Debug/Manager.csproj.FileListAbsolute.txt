@@ -1,0 +1,4 @@
+C:\Users\Radek\Desktop\Visual\TSST\Manager\bin\Debug\Manager.dll
+C:\Users\Radek\Desktop\Visual\TSST\Manager\bin\Debug\Manager.pdb
+C:\Users\Radek\Desktop\Visual\TSST\Manager\obj\Debug\Manager.dll
+C:\Users\Radek\Desktop\Visual\TSST\Manager\obj\Debug\Manager.pdb

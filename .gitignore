@@ -1,6 +1,1 @@
-bin
-obj
-Properties
-App.config
-TSST.csproj
-ConsoleApp1.csproj
+.vs

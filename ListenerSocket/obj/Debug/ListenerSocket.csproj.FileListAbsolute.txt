@@ -1,0 +1,5 @@
+C:\Users\Radek\Desktop\Visual\TSST\ListenerSocket\bin\Debug\ListenerSocket.dll
+C:\Users\Radek\Desktop\Visual\TSST\ListenerSocket\bin\Debug\ListenerSocket.pdb
+C:\Users\Radek\Desktop\Visual\TSST\ListenerSocket\obj\Debug\ListenerSocket.csprojResolveAssemblyReference.cache
+C:\Users\Radek\Desktop\Visual\TSST\ListenerSocket\obj\Debug\ListenerSocket.dll
+C:\Users\Radek\Desktop\Visual\TSST\ListenerSocket\obj\Debug\ListenerSocket.pdb

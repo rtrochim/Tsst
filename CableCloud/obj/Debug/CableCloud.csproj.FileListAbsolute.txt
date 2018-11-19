@@ -1,0 +1,6 @@
+C:\Users\Radek\Desktop\Visual\TSST\CableCloud\bin\Debug\CableCloud.exe.config
+C:\Users\Radek\Desktop\Visual\TSST\CableCloud\bin\Debug\CableCloud.exe
+C:\Users\Radek\Desktop\Visual\TSST\CableCloud\bin\Debug\CableCloud.pdb
+C:\Users\Radek\Desktop\Visual\TSST\CableCloud\obj\Debug\CableCloud.csprojResolveAssemblyReference.cache
+C:\Users\Radek\Desktop\Visual\TSST\CableCloud\obj\Debug\CableCloud.exe
+C:\Users\Radek\Desktop\Visual\TSST\CableCloud\obj\Debug\CableCloud.pdb

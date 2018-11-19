@@ -1,0 +1,4 @@
+C:\Users\Radek\Desktop\Visual\TSST\SwitchingField\bin\Debug\SwitchingField.dll
+C:\Users\Radek\Desktop\Visual\TSST\SwitchingField\bin\Debug\SwitchingField.pdb
+C:\Users\Radek\Desktop\Visual\TSST\SwitchingField\obj\Debug\SwitchingField.dll
+C:\Users\Radek\Desktop\Visual\TSST\SwitchingField\obj\Debug\SwitchingField.pdb

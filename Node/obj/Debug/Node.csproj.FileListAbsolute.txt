@@ -1,0 +1,16 @@
+C:\Users\Radek\Desktop\Visual\TSST\Node\obj\Debug\Node.csprojResolveAssemblyReference.cache
+C:\Users\Radek\Desktop\Visual\TSST\Node\bin\Debug\Node.exe.config
+C:\Users\Radek\Desktop\Visual\TSST\Node\bin\Debug\Node.exe
+C:\Users\Radek\Desktop\Visual\TSST\Node\bin\Debug\Node.pdb
+C:\Users\Radek\Desktop\Visual\TSST\Node\bin\Debug\Agent.dll
+C:\Users\Radek\Desktop\Visual\TSST\Node\bin\Debug\ListenerSocket.dll
+C:\Users\Radek\Desktop\Visual\TSST\Node\bin\Debug\Port.dll
+C:\Users\Radek\Desktop\Visual\TSST\Node\bin\Debug\SenderSocket.dll
+C:\Users\Radek\Desktop\Visual\TSST\Node\bin\Debug\SwitchingField.dll
+C:\Users\Radek\Desktop\Visual\TSST\Node\bin\Debug\Agent.pdb
+C:\Users\Radek\Desktop\Visual\TSST\Node\bin\Debug\ListenerSocket.pdb
+C:\Users\Radek\Desktop\Visual\TSST\Node\bin\Debug\Port.pdb
+C:\Users\Radek\Desktop\Visual\TSST\Node\bin\Debug\SenderSocket.pdb
+C:\Users\Radek\Desktop\Visual\TSST\Node\bin\Debug\SwitchingField.pdb
+C:\Users\Radek\Desktop\Visual\TSST\Node\obj\Debug\Node.exe
+C:\Users\Radek\Desktop\Visual\TSST\Node\obj\Debug\Node.pdb

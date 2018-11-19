@@ -1,0 +1,10 @@
+C:\Users\Radek\Desktop\Visual\TSST\Client\obj\Debug\Client.csprojResolveAssemblyReference.cache
+C:\Users\Radek\Desktop\Visual\TSST\Client\bin\Debug\Client.exe.config
+C:\Users\Radek\Desktop\Visual\TSST\Client\bin\Debug\Client.exe
+C:\Users\Radek\Desktop\Visual\TSST\Client\bin\Debug\Client.pdb
+C:\Users\Radek\Desktop\Visual\TSST\Client\bin\Debug\ListenerSocket.dll
+C:\Users\Radek\Desktop\Visual\TSST\Client\bin\Debug\SenderSocket.dll
+C:\Users\Radek\Desktop\Visual\TSST\Client\bin\Debug\ListenerSocket.pdb
+C:\Users\Radek\Desktop\Visual\TSST\Client\bin\Debug\SenderSocket.pdb
+C:\Users\Radek\Desktop\Visual\TSST\Client\obj\Debug\Client.exe
+C:\Users\Radek\Desktop\Visual\TSST\Client\obj\Debug\Client.pdb
