@@ -124,7 +124,7 @@ namespace TSST
                     state.buffer, 0, bytesRead));
 
                 // Check for end-of-file tag. If it is not there, read   
-                // more data.  
+                // more data.   
                 content = state.sb.ToString();
                 if (content.IndexOf("<EOF>") > -1)
                 {

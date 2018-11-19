@@ -49,6 +49,16 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ListenerSocket\ListenerSocket.csproj">
+      <Project>{224bd71b-a967-4e64-9b41-d7303f46628d}</Project>
+      <Name>ListenerSocket</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SenderSocket\SenderSocket.csproj">
+      <Project>{7efda123-613f-4a72-a23b-1330bda77543}</Project>
+      <Name>SenderSocket</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

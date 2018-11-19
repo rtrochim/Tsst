@@ -4,3 +4,7 @@ C:\Users\Radek\Desktop\Visual\TSST\CableCloud\bin\Debug\CableCloud.pdb
 C:\Users\Radek\Desktop\Visual\TSST\CableCloud\obj\Debug\CableCloud.csprojResolveAssemblyReference.cache
 C:\Users\Radek\Desktop\Visual\TSST\CableCloud\obj\Debug\CableCloud.exe
 C:\Users\Radek\Desktop\Visual\TSST\CableCloud\obj\Debug\CableCloud.pdb
+C:\Users\Radek\Desktop\Visual\TSST\CableCloud\bin\Debug\ListenerSocket.dll
+C:\Users\Radek\Desktop\Visual\TSST\CableCloud\bin\Debug\SenderSocket.dll
+C:\Users\Radek\Desktop\Visual\TSST\CableCloud\bin\Debug\ListenerSocket.pdb
+C:\Users\Radek\Desktop\Visual\TSST\CableCloud\bin\Debug\SenderSocket.pdb
