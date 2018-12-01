@@ -8,3 +8,15 @@ C:\Users\Radek\Desktop\Visual\TSST\CableCloud\bin\Debug\ListenerSocket.dll
 C:\Users\Radek\Desktop\Visual\TSST\CableCloud\bin\Debug\SenderSocket.dll
 C:\Users\Radek\Desktop\Visual\TSST\CableCloud\bin\Debug\ListenerSocket.pdb
 C:\Users\Radek\Desktop\Visual\TSST\CableCloud\bin\Debug\SenderSocket.pdb
+C:\Users\Lenovo\source\repos\Tsst\CableCloud\bin\Debug\CableCloud.exe.config
+C:\Users\Lenovo\source\repos\Tsst\CableCloud\bin\Debug\CableCloud.exe
+C:\Users\Lenovo\source\repos\Tsst\CableCloud\bin\Debug\CableCloud.pdb
+C:\Users\Lenovo\source\repos\Tsst\CableCloud\bin\Debug\ListenerSocket.dll
+C:\Users\Lenovo\source\repos\Tsst\CableCloud\bin\Debug\SenderSocket.dll
+C:\Users\Lenovo\source\repos\Tsst\CableCloud\bin\Debug\ListenerSocket.pdb
+C:\Users\Lenovo\source\repos\Tsst\CableCloud\bin\Debug\SenderSocket.pdb
+C:\Users\Lenovo\source\repos\Tsst\CableCloud\obj\Debug\CableCloud.csprojAssemblyReference.cache
+C:\Users\Lenovo\source\repos\Tsst\CableCloud\obj\Debug\CableCloud.csproj.CoreCompileInputs.cache
+C:\Users\Lenovo\source\repos\Tsst\CableCloud\obj\Debug\CableCloud.csproj.CopyComplete
+C:\Users\Lenovo\source\repos\Tsst\CableCloud\obj\Debug\CableCloud.exe
+C:\Users\Lenovo\source\repos\Tsst\CableCloud\obj\Debug\CableCloud.pdb

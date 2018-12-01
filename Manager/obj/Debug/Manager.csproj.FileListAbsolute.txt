@@ -2,3 +2,8 @@ C:\Users\Radek\Desktop\Visual\TSST\Manager\bin\Debug\Manager.dll
 C:\Users\Radek\Desktop\Visual\TSST\Manager\bin\Debug\Manager.pdb
 C:\Users\Radek\Desktop\Visual\TSST\Manager\obj\Debug\Manager.dll
 C:\Users\Radek\Desktop\Visual\TSST\Manager\obj\Debug\Manager.pdb
+C:\Users\Lenovo\source\repos\Tsst\Manager\bin\Debug\Manager.dll
+C:\Users\Lenovo\source\repos\Tsst\Manager\bin\Debug\Manager.pdb
+C:\Users\Lenovo\source\repos\Tsst\Manager\obj\Debug\Manager.csproj.CoreCompileInputs.cache
+C:\Users\Lenovo\source\repos\Tsst\Manager\obj\Debug\Manager.dll
+C:\Users\Lenovo\source\repos\Tsst\Manager\obj\Debug\Manager.pdb

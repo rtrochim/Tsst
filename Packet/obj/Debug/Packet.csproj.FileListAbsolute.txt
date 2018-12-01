@@ -1,0 +1,6 @@
+C:\Users\Lenovo\source\repos\Tsst\Packet\bin\Debug\Packet.dll
+C:\Users\Lenovo\source\repos\Tsst\Packet\bin\Debug\Packet.pdb
+C:\Users\Lenovo\source\repos\Tsst\Packet\obj\Debug\Packet.csproj.CoreCompileInputs.cache
+C:\Users\Lenovo\source\repos\Tsst\Packet\obj\Debug\Packet.dll
+C:\Users\Lenovo\source\repos\Tsst\Packet\obj\Debug\Packet.pdb
+C:\Users\Lenovo\source\repos\Tsst\Packet\obj\Debug\Packet.csprojAssemblyReference.cache

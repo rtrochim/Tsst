@@ -3,3 +3,9 @@ C:\Users\Radek\Desktop\Visual\TSST\SenderSocket\bin\Debug\SenderSocket.pdb
 C:\Users\Radek\Desktop\Visual\TSST\SenderSocket\obj\Debug\SenderSocket.csprojResolveAssemblyReference.cache
 C:\Users\Radek\Desktop\Visual\TSST\SenderSocket\obj\Debug\SenderSocket.dll
 C:\Users\Radek\Desktop\Visual\TSST\SenderSocket\obj\Debug\SenderSocket.pdb
+C:\Users\Lenovo\source\repos\Tsst\SenderSocket\bin\Debug\SenderSocket.dll
+C:\Users\Lenovo\source\repos\Tsst\SenderSocket\bin\Debug\SenderSocket.pdb
+C:\Users\Lenovo\source\repos\Tsst\SenderSocket\obj\Debug\SenderSocket.csprojAssemblyReference.cache
+C:\Users\Lenovo\source\repos\Tsst\SenderSocket\obj\Debug\SenderSocket.csproj.CoreCompileInputs.cache
+C:\Users\Lenovo\source\repos\Tsst\SenderSocket\obj\Debug\SenderSocket.dll
+C:\Users\Lenovo\source\repos\Tsst\SenderSocket\obj\Debug\SenderSocket.pdb

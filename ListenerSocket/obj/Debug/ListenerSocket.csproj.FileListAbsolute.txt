@@ -3,3 +3,9 @@ C:\Users\Radek\Desktop\Visual\TSST\ListenerSocket\bin\Debug\ListenerSocket.pdb
 C:\Users\Radek\Desktop\Visual\TSST\ListenerSocket\obj\Debug\ListenerSocket.csprojResolveAssemblyReference.cache
 C:\Users\Radek\Desktop\Visual\TSST\ListenerSocket\obj\Debug\ListenerSocket.dll
 C:\Users\Radek\Desktop\Visual\TSST\ListenerSocket\obj\Debug\ListenerSocket.pdb
+C:\Users\Lenovo\source\repos\Tsst\ListenerSocket\bin\Debug\ListenerSocket.dll
+C:\Users\Lenovo\source\repos\Tsst\ListenerSocket\bin\Debug\ListenerSocket.pdb
+C:\Users\Lenovo\source\repos\Tsst\ListenerSocket\obj\Debug\ListenerSocket.csprojAssemblyReference.cache
+C:\Users\Lenovo\source\repos\Tsst\ListenerSocket\obj\Debug\ListenerSocket.csproj.CoreCompileInputs.cache
+C:\Users\Lenovo\source\repos\Tsst\ListenerSocket\obj\Debug\ListenerSocket.dll
+C:\Users\Lenovo\source\repos\Tsst\ListenerSocket\obj\Debug\ListenerSocket.pdb

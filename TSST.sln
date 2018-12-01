@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2046
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Node", "Node\Node.csproj", "{42060A16-DBF3-469C-B5DD-0C0BE4BA3822}"
 EndProject
@@ -24,6 +24,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwitchingField", "SwitchingField\SwitchingField.csproj", "{C27DD9A7-BEF0-4C9E-AE7E-76BA922875FA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Port", "Port\Port.csproj", "{2411D790-950A-4CEB-B128-00C2F9BDE8DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Packet", "Packet\Packet.csproj", "{E6983333-0ADF-4186-A652-00428ED13532}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +73,10 @@ Global
 		{2411D790-950A-4CEB-B128-00C2F9BDE8DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2411D790-950A-4CEB-B128-00C2F9BDE8DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2411D790-950A-4CEB-B128-00C2F9BDE8DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6983333-0ADF-4186-A652-00428ED13532}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6983333-0ADF-4186-A652-00428ED13532}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6983333-0ADF-4186-A652-00428ED13532}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6983333-0ADF-4186-A652-00428ED13532}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -82,5 +88,9 @@ Global
 		{9B63AB69-E9E1-4DFE-8E33-4535225A589B} = {D92D8ECD-F0FD-46A6-BB8A-688F95DEA89F}
 		{C27DD9A7-BEF0-4C9E-AE7E-76BA922875FA} = {D92D8ECD-F0FD-46A6-BB8A-688F95DEA89F}
 		{2411D790-950A-4CEB-B128-00C2F9BDE8DB} = {D92D8ECD-F0FD-46A6-BB8A-688F95DEA89F}
+		{E6983333-0ADF-4186-A652-00428ED13532} = {D92D8ECD-F0FD-46A6-BB8A-688F95DEA89F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5CF5A60E-EB1C-4935-87D9-12B5C9472499}
 	EndGlobalSection
 EndGlobal

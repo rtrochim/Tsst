@@ -2,3 +2,14 @@ C:\Users\Radek\Desktop\Visual\TSST\SwitchingField\bin\Debug\SwitchingField.dll
 C:\Users\Radek\Desktop\Visual\TSST\SwitchingField\bin\Debug\SwitchingField.pdb
 C:\Users\Radek\Desktop\Visual\TSST\SwitchingField\obj\Debug\SwitchingField.dll
 C:\Users\Radek\Desktop\Visual\TSST\SwitchingField\obj\Debug\SwitchingField.pdb
+C:\Users\Lenovo\source\repos\Tsst\SwitchingField\bin\Debug\SwitchingField.dll
+C:\Users\Lenovo\source\repos\Tsst\SwitchingField\bin\Debug\SwitchingField.pdb
+C:\Users\Lenovo\source\repos\Tsst\SwitchingField\obj\Debug\SwitchingField.csprojAssemblyReference.cache
+C:\Users\Lenovo\source\repos\Tsst\SwitchingField\obj\Debug\SwitchingField.csproj.CoreCompileInputs.cache
+C:\Users\Lenovo\source\repos\Tsst\SwitchingField\obj\Debug\SwitchingField.dll
+C:\Users\Lenovo\source\repos\Tsst\SwitchingField\obj\Debug\SwitchingField.pdb
+C:\Users\Lenovo\source\repos\Tsst\SwitchingField\bin\Debug\ListenerSocket.dll
+C:\Users\Lenovo\source\repos\Tsst\SwitchingField\bin\Debug\SenderSocket.dll
+C:\Users\Lenovo\source\repos\Tsst\SwitchingField\bin\Debug\ListenerSocket.pdb
+C:\Users\Lenovo\source\repos\Tsst\SwitchingField\bin\Debug\SenderSocket.pdb
+C:\Users\Lenovo\source\repos\Tsst\SwitchingField\obj\Debug\SwitchingField.csproj.CopyComplete

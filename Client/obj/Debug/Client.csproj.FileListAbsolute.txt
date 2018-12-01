@@ -8,3 +8,17 @@ C:\Users\Radek\Desktop\Visual\TSST\Client\bin\Debug\ListenerSocket.pdb
 C:\Users\Radek\Desktop\Visual\TSST\Client\bin\Debug\SenderSocket.pdb
 C:\Users\Radek\Desktop\Visual\TSST\Client\obj\Debug\Client.exe
 C:\Users\Radek\Desktop\Visual\TSST\Client\obj\Debug\Client.pdb
+C:\Users\Lenovo\source\repos\Tsst\Client\bin\Debug\Client.exe.config
+C:\Users\Lenovo\source\repos\Tsst\Client\bin\Debug\Client.exe
+C:\Users\Lenovo\source\repos\Tsst\Client\bin\Debug\Client.pdb
+C:\Users\Lenovo\source\repos\Tsst\Client\bin\Debug\ListenerSocket.dll
+C:\Users\Lenovo\source\repos\Tsst\Client\bin\Debug\SenderSocket.dll
+C:\Users\Lenovo\source\repos\Tsst\Client\bin\Debug\ListenerSocket.pdb
+C:\Users\Lenovo\source\repos\Tsst\Client\bin\Debug\SenderSocket.pdb
+C:\Users\Lenovo\source\repos\Tsst\Client\obj\Debug\Client.csprojAssemblyReference.cache
+C:\Users\Lenovo\source\repos\Tsst\Client\obj\Debug\Client.csproj.CoreCompileInputs.cache
+C:\Users\Lenovo\source\repos\Tsst\Client\obj\Debug\Client.csproj.CopyComplete
+C:\Users\Lenovo\source\repos\Tsst\Client\obj\Debug\Client.exe
+C:\Users\Lenovo\source\repos\Tsst\Client\obj\Debug\Client.pdb
+C:\Users\Lenovo\source\repos\Tsst\Client\bin\Debug\Packet.dll
+C:\Users\Lenovo\source\repos\Tsst\Client\bin\Debug\Packet.pdb

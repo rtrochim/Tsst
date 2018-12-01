@@ -2,3 +2,9 @@ C:\Users\Radek\Desktop\Visual\TSST\Agent\bin\Debug\Agent.dll
 C:\Users\Radek\Desktop\Visual\TSST\Agent\bin\Debug\Agent.pdb
 C:\Users\Radek\Desktop\Visual\TSST\Agent\obj\Debug\Agent.dll
 C:\Users\Radek\Desktop\Visual\TSST\Agent\obj\Debug\Agent.pdb
+C:\Users\Lenovo\source\repos\Tsst\Agent\bin\Debug\Agent.dll
+C:\Users\Lenovo\source\repos\Tsst\Agent\bin\Debug\Agent.pdb
+C:\Users\Lenovo\source\repos\Tsst\Agent\obj\Debug\Agent.csprojAssemblyReference.cache
+C:\Users\Lenovo\source\repos\Tsst\Agent\obj\Debug\Agent.csproj.CoreCompileInputs.cache
+C:\Users\Lenovo\source\repos\Tsst\Agent\obj\Debug\Agent.dll
+C:\Users\Lenovo\source\repos\Tsst\Agent\obj\Debug\Agent.pdb

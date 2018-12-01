@@ -14,7 +14,8 @@ namespace TSST
         public SenderSocket sender;
         public static int listenerPort;
         public static int targetPort;
-
+        //SwitchingField sf;
+   
         static void Main(string[] args)
         {
             Thread.Sleep(1000);
@@ -42,6 +43,7 @@ namespace TSST
             childThread.Start();
             this.sender = new SenderSocket();
             this.sender.sendMessage("Hello world from node!<EOF>", targetPort);
+            //sf = new SwitchingField();
         }
 
         public void listeningThread()
