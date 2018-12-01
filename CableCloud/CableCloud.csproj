@@ -54,6 +54,10 @@
       <Project>{224bd71b-a967-4e64-9b41-d7303f46628d}</Project>
       <Name>ListenerSocket</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Packet\Packet.csproj">
+      <Project>{e6983333-0adf-4186-a652-00428ed13532}</Project>
+      <Name>Packet</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SenderSocket\SenderSocket.csproj">
       <Project>{7efda123-613f-4a72-a23b-1330bda77543}</Project>
       <Name>SenderSocket</Name>

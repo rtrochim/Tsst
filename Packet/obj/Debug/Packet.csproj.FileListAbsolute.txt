@@ -4,3 +4,8 @@ C:\Users\Lenovo\source\repos\Tsst\Packet\obj\Debug\Packet.csproj.CoreCompileInpu
 C:\Users\Lenovo\source\repos\Tsst\Packet\obj\Debug\Packet.dll
 C:\Users\Lenovo\source\repos\Tsst\Packet\obj\Debug\Packet.pdb
 C:\Users\Lenovo\source\repos\Tsst\Packet\obj\Debug\Packet.csprojAssemblyReference.cache
+C:\Users\Radek\Desktop\Visual\TSST\Packet\bin\Debug\Packet.dll
+C:\Users\Radek\Desktop\Visual\TSST\Packet\bin\Debug\Packet.pdb
+C:\Users\Radek\Desktop\Visual\TSST\Packet\obj\Debug\Packet.csprojResolveAssemblyReference.cache
+C:\Users\Radek\Desktop\Visual\TSST\Packet\obj\Debug\Packet.dll
+C:\Users\Radek\Desktop\Visual\TSST\Packet\obj\Debug\Packet.pdb

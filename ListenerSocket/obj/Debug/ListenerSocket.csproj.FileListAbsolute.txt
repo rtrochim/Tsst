@@ -9,3 +9,5 @@ C:\Users\Lenovo\source\repos\Tsst\ListenerSocket\obj\Debug\ListenerSocket.csproj
 C:\Users\Lenovo\source\repos\Tsst\ListenerSocket\obj\Debug\ListenerSocket.csproj.CoreCompileInputs.cache
 C:\Users\Lenovo\source\repos\Tsst\ListenerSocket\obj\Debug\ListenerSocket.dll
 C:\Users\Lenovo\source\repos\Tsst\ListenerSocket\obj\Debug\ListenerSocket.pdb
+C:\Users\Radek\Desktop\Visual\TSST\ListenerSocket\bin\Debug\Packet.dll
+C:\Users\Radek\Desktop\Visual\TSST\ListenerSocket\bin\Debug\Packet.pdb

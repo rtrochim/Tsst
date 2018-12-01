@@ -43,6 +43,12 @@
     <Compile Include="ListenerSocket.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Packet\Packet.csproj">
+      <Project>{e6983333-0adf-4186-a652-00428ed13532}</Project>
+      <Name>Packet</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

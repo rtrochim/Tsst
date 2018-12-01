@@ -48,13 +48,8 @@ namespace TSST
             
     
             this.sender = new SenderSocket();
-            this.sender.sendMessage("Hello world from Client!<EOF>", targetPort);
-            
-            ThreadStart childref2 = new ThreadStart(makePacketThread);
-            Thread childThread2 = new Thread(childref2);
-            childThread2.Start(); 
-
-
+            Packet packet = new Packet("dupa123", 11005);
+            this.sender.sendMessage(packet.serialize(), targetPort);
         }
 
         public void listeningThread()
@@ -62,40 +57,6 @@ namespace TSST
             Console.WriteLine("Client listening on port {0}", listenerPort);
             Console.WriteLine("I will send data to port {0}", targetPort);
             this.listener = new ListenerSocket(listenerPort);
-            
         }
-
-         public void makePacketThread()
-         {
-             Console.WriteLine("Give data:");
-             data = Console.ReadLine();
-
-             Packet packet = new Packet(data, listenerPort);
-            packetID++;
-
-            Stream stream = File.Open("packet"+packetID+".txt", FileMode.Create);
-            BinaryFormatter bf = new BinaryFormatter();
-
-            bf.Serialize(stream, packet);
-            stream.Close();
-            
-            /*
-            //check
-            packet = null;
-
-            stream = File.Open("packet" + packetID + ".txt", FileMode.Open);
-            bf = new BinaryFormatter();
-
-            packet = (Packet)bf.Deserialize(stream);
-            stream.Close();
-
-            Console.WriteLine("After deserialization ");
-            Console.WriteLine("Data: " + packet.data);
-            Console.WriteLine("Source Port: " + packet.sourcePort);
-            Console.WriteLine("Label: " + packet.currentLabel);
-            Console.WriteLine("Target Port: " + packet.targetPort);
-            */
-              }
-
     }
 }

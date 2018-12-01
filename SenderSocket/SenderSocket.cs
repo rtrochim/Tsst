@@ -14,9 +14,9 @@ namespace TSST
             this.socketClient = new SynchronousSocketClient();
         }
 
-        public void sendMessage(string message, int port)
+        public void sendMessage(byte[] msg, int port)
         {
-            this.socketClient.SendMessage(message, port);
+            this.socketClient.SendMessage(msg, port);
         }
     }
 
@@ -25,7 +25,7 @@ namespace TSST
         Socket sender;
         IPEndPoint remoteEP;
 
-        public void SendMessage(string message, int port)
+        public void SendMessage(byte[] msg, int port)
         {
             // Data buffer for incoming data.  
             byte[] bytes = new byte[1024];
@@ -49,9 +49,7 @@ namespace TSST
 
                     Console.WriteLine("Socket connected to {0}",
                         this.sender.RemoteEndPoint.ToString());
-
-                    // Encode the data string into a byte array.  
-                    byte[] msg = Encoding.ASCII.GetBytes(message);
+                   
 
                     // Send the data through the socket.  
                     int bytesSent = this.sender.Send(msg);

@@ -5,36 +5,43 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace TSST
 {
     [Serializable()]
     public class Packet
     {
-        public string currentLabel, data;
-        public int sourcePort, targetPort;
+        public List<char> labels;
+        public string data;
+        public int targetPort;
         [NonSerialized()] public static int packetID = 0;
 
-        public Packet(string data, int sourcePort)
+        public Packet(string data, int targetPort)
         {
             Console.WriteLine("Hello I am a Packet");
             packetID++;
             this.data = data;
-            this.sourcePort = sourcePort;
-            getInfo();
-            Console.WriteLine("currentLabel: " + currentLabel);
-            Console.WriteLine("targetPort: " + targetPort);
-            Console.WriteLine("Data: " + data);
+            this.targetPort = targetPort;
         }
 
-        public void getInfo()
+        public byte[] serialize()
         {
-            string[] lines = File.ReadAllLines("Packet"+packetID+".conf");
-            currentLabel = lines[0];
-            targetPort = Int32.Parse(lines[1]);
-           // Console.ReadKey();
+            BinaryFormatter bf = new BinaryFormatter();
+            using (MemoryStream ms = new MemoryStream())
+            {
+                bf.Serialize(ms, this);
+                return ms.ToArray();
+            }
         }
 
-
+        public static Packet deserialize(byte[] data)
+        {
+            MemoryStream ms = new MemoryStream();
+            BinaryFormatter bf = new BinaryFormatter();
+            ms.Write(data, 0, data.Length);
+            ms.Seek(0, SeekOrigin.Begin);
+            return (Packet)bf.Deserialize(ms);
+        }
     }
 }

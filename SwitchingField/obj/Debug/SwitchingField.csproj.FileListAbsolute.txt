@@ -13,3 +13,10 @@ C:\Users\Lenovo\source\repos\Tsst\SwitchingField\bin\Debug\SenderSocket.dll
 C:\Users\Lenovo\source\repos\Tsst\SwitchingField\bin\Debug\ListenerSocket.pdb
 C:\Users\Lenovo\source\repos\Tsst\SwitchingField\bin\Debug\SenderSocket.pdb
 C:\Users\Lenovo\source\repos\Tsst\SwitchingField\obj\Debug\SwitchingField.csproj.CopyComplete
+C:\Users\Radek\Desktop\Visual\TSST\SwitchingField\bin\Debug\ListenerSocket.dll
+C:\Users\Radek\Desktop\Visual\TSST\SwitchingField\bin\Debug\SenderSocket.dll
+C:\Users\Radek\Desktop\Visual\TSST\SwitchingField\bin\Debug\ListenerSocket.pdb
+C:\Users\Radek\Desktop\Visual\TSST\SwitchingField\bin\Debug\SenderSocket.pdb
+C:\Users\Radek\Desktop\Visual\TSST\SwitchingField\obj\Debug\SwitchingField.csprojResolveAssemblyReference.cache
+C:\Users\Radek\Desktop\Visual\TSST\SwitchingField\bin\Debug\Packet.dll
+C:\Users\Radek\Desktop\Visual\TSST\SwitchingField\bin\Debug\Packet.pdb

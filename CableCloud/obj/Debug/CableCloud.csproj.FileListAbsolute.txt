@@ -20,3 +20,5 @@ C:\Users\Lenovo\source\repos\Tsst\CableCloud\obj\Debug\CableCloud.csproj.CoreCom
 C:\Users\Lenovo\source\repos\Tsst\CableCloud\obj\Debug\CableCloud.csproj.CopyComplete
 C:\Users\Lenovo\source\repos\Tsst\CableCloud\obj\Debug\CableCloud.exe
 C:\Users\Lenovo\source\repos\Tsst\CableCloud\obj\Debug\CableCloud.pdb
+C:\Users\Radek\Desktop\Visual\TSST\CableCloud\bin\Debug\Packet.dll
+C:\Users\Radek\Desktop\Visual\TSST\CableCloud\bin\Debug\Packet.pdb
