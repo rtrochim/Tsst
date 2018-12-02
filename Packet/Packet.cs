@@ -19,7 +19,6 @@ namespace TSST
 
         public Packet(string data, int targetPort)
         {
-            Console.WriteLine("Hello I am a Packet");
             packetID++;
             this.data = data;
             this.targetPort = targetPort;

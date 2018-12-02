@@ -8,3 +8,4 @@ C:\Users\Lenovo\source\repos\Tsst\Port\obj\Debug\Port.csprojAssemblyReference.ca
 C:\Users\Lenovo\source\repos\Tsst\Port\obj\Debug\Port.csproj.CoreCompileInputs.cache
 C:\Users\Lenovo\source\repos\Tsst\Port\obj\Debug\Port.dll
 C:\Users\Lenovo\source\repos\Tsst\Port\obj\Debug\Port.pdb
+C:\Users\Radek\Desktop\Visual\TSST\Port\obj\Debug\Port.csprojResolveAssemblyReference.cache

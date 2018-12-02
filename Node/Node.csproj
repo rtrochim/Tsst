@@ -58,6 +58,10 @@
       <Project>{224bd71b-a967-4e64-9b41-d7303f46628d}</Project>
       <Name>ListenerSocket</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Packet\Packet.csproj">
+      <Project>{e6983333-0adf-4186-a652-00428ed13532}</Project>
+      <Name>Packet</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Port\Port.csproj">
       <Project>{2411d790-950a-4ceb-b128-00c2f9bde8db}</Project>
       <Name>Port</Name>

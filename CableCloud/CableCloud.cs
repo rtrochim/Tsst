@@ -17,6 +17,8 @@ namespace TSST
         public Dictionary<int, int> connections;
         public Packet packet;
 
+        
+
         static void Main(string[] args)
         {
             string[] lines = File.ReadAllLines(args[0]);
@@ -49,7 +51,6 @@ namespace TSST
             for (int i = 0; i < portNums.Count; i++)
             {   
                 currentPortNum = portNums[i];
-                Console.WriteLine("PortNumber {0}", currentPortNum);
                 ThreadStart childref = new ThreadStart(listeningThread);
                 Thread childThread = new Thread(childref);
                 childThread.Start();
@@ -59,8 +60,7 @@ namespace TSST
         }
         public void listeningThread()
         {
-            Console.WriteLine("I am listening thread");
-            this.listener = new ListenerSocket(currentPortNum);
+            this.listener = new ListenerSocket(currentPortNum, handlePacket);
         }
         public void readConnections()
         {
@@ -70,6 +70,14 @@ namespace TSST
                 string[] ports = line.Split(' ');
                 this.connections.Add(Int32.Parse(ports[0]), Int32.Parse(ports[1]));
             }
+        }
+
+        public int handlePacket(Packet p)
+        {
+            packet = p;
+            Console.WriteLine("Got packet with data: {0} \n sending to port {1}", packet.data, packet.targetPort);
+            sender.sendMessage(packet.serialize(), packet.targetPort);
+            return 0;
         }
     }
 }

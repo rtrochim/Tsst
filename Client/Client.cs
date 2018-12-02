@@ -17,9 +17,7 @@ namespace TSST
         public SenderSocket sender;
         public static int listenerPort;
         public static int targetPort;
-
-        public string data;
-        public static int packetID = 0;
+        public Packet packet;
 
         static void Main(string[] args)
         {
@@ -48,15 +46,21 @@ namespace TSST
             
     
             this.sender = new SenderSocket();
-            Packet packet = new Packet("dupa123", 11005);
+            Packet packet = new Packet("This is my data", 11005);
             this.sender.sendMessage(packet.serialize(), targetPort);
         }
 
         public void listeningThread()
         {
-            Console.WriteLine("Client listening on port {0}", listenerPort);
             Console.WriteLine("I will send data to port {0}", targetPort);
-            this.listener = new ListenerSocket(listenerPort);
+            this.listener = new ListenerSocket(listenerPort, handlePacket);
+        }
+
+        public int handlePacket(Packet p)
+        {
+            packet = p;
+            Console.WriteLine(packet.data);
+            return 0;
         }
     }
 }

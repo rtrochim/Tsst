@@ -15,6 +15,7 @@ namespace TSST
         public static int listenerPort;
         public static int targetPort;
         public SwitchingField sf;
+        public Packet packet;
    
         static void Main(string[] args)
         {
@@ -48,9 +49,15 @@ namespace TSST
 
         public void listeningThread()
         {
-            Console.WriteLine("Node listening on port {0}", listenerPort);
             Console.WriteLine("I will send data to port {0}", targetPort);
-            this.listener = new ListenerSocket(listenerPort);
+            this.listener = new ListenerSocket(listenerPort, handlePacket);
+        }
+
+        public int handlePacket(Packet p)
+        {
+            packet = p;
+            Console.WriteLine("Got packet with data: {0} \n sending to port {1}", packet.data, packet.targetPort);
+            return 0;
         }
     }
 }
