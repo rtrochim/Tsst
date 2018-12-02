@@ -12,12 +12,12 @@ namespace TSST
     public class ListenerSocket
     {
         int port;
-        public ListenerSocket(int port, Func<Packet, int> handler)
+        public ListenerSocket(int port, Func<Packet, int, int> handler)
         {
             Console.WriteLine("I am listening on port {0}", port);
             this.port = port;
             AsynchronousSocketListener listener = new AsynchronousSocketListener(this.port);
-            listener.start(handler);
+            listener.start(handler, port);
         }
 
     }
@@ -45,7 +45,7 @@ namespace TSST
             this.port = port;
         }
 
-        public void StartListening(Func<Packet, int> handler)
+        public void StartListening(Func<Packet, int, int> handler, int port)
         {
             // Establish the local endpoint for the socket.  
             // The DNS name of the computer  
@@ -72,7 +72,7 @@ namespace TSST
                     // Start an asynchronous socket to listen for connections.  
                     // Console.WriteLine("Waiting for a connection...");
                     listener.BeginAccept(
-                        new AsyncCallback(arr => AcceptCallback(arr, handler)),
+                        new AsyncCallback(arr => AcceptCallback(arr, handler, port)),
                         listener);
 
                     // Wait until a connection is made before continuing.  
@@ -89,7 +89,7 @@ namespace TSST
             Console.Read();
         }
 
-        public static void AcceptCallback(IAsyncResult ar, Func<Packet, int> function)
+        public static void AcceptCallback(IAsyncResult ar, Func<Packet, int, int> function, int port)
         {
             // Signal the main thread to continue.  
             allDone.Set();
@@ -102,10 +102,10 @@ namespace TSST
             StateObject state = new StateObject();
             state.workSocket = handler;
             handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
-                new AsyncCallback(arr => ReadCallback(arr, function)), state);
+                new AsyncCallback(arr => ReadCallback(arr, function, port)), state);
         }
 
-        public static void ReadCallback(IAsyncResult ar, Func<Packet, int> function)
+        public static void ReadCallback(IAsyncResult ar, Func<Packet, int, int> function, int port)
         {
             String content = String.Empty;
 
@@ -116,7 +116,7 @@ namespace TSST
 
             // Read data from the client socket.   
             int bytesRead = handler.EndReceive(ar);
-            function(Packet.deserialize(state.buffer));
+            function(Packet.deserialize(state.buffer), port);
         }
 
         private static void Send(Socket handler, String data)
@@ -149,9 +149,9 @@ namespace TSST
                 Console.WriteLine(e.ToString());
             }
         }
-        public void start(Func<Packet, int> handler)
+        public void start(Func<Packet, int, int> handler, int port)
         {
-            StartListening(handler);
+            StartListening(handler, port);
         }
     }
 }

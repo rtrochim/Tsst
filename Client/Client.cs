@@ -21,12 +21,20 @@ namespace TSST
 
         static void Main(string[] args)
         {
+            Console.SetWindowSize(45, 20);
             Thread.Sleep(1000);
             string[] lines = File.ReadAllLines(args[0]);
             listenerPort = Int32.Parse(lines[0]);
             targetPort = Int32.Parse(lines[1]);
             Client c = new Client();
-            //Console.ReadKey();
+            Console.WriteLine("Give me some data: ");
+            string message = Console.ReadLine();
+            Console.WriteLine("Gimme the port: ");
+            string portNumber = Console.ReadLine();
+            Packet packetToSend = new Packet(message, Int32.Parse(portNumber));
+
+            c.sender.sendMessage(packetToSend.serialize(), targetPort);
+            Console.ReadKey();
         }
 
         public Client()
@@ -46,8 +54,6 @@ namespace TSST
             
     
             this.sender = new SenderSocket();
-            Packet packet = new Packet("This is my data", 11005);
-            this.sender.sendMessage(packet.serialize(), targetPort);
         }
 
         public void listeningThread()
@@ -56,7 +62,7 @@ namespace TSST
             this.listener = new ListenerSocket(listenerPort, handlePacket);
         }
 
-        public int handlePacket(Packet p)
+        public int handlePacket(Packet p, int port)
         {
             packet = p;
             Console.WriteLine(packet.data);

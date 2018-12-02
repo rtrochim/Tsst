@@ -19,6 +19,7 @@ namespace TSST
    
         static void Main(string[] args)
         {
+            Console.SetWindowSize(45, 20);
             Thread.Sleep(1000);
             string[] lines = File.ReadAllLines(args[0]);
             listenerPort = Int32.Parse(lines[0]);
@@ -53,7 +54,7 @@ namespace TSST
             this.listener = new ListenerSocket(listenerPort, handlePacket);
         }
 
-        public int handlePacket(Packet p)
+        public int handlePacket(Packet p, int port)
         {
             packet = p;
             Console.WriteLine("Got packet with data: {0} \n sending to port {1}", packet.data, packet.targetPort);

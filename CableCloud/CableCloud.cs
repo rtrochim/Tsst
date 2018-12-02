@@ -14,13 +14,18 @@ namespace TSST
         ListenerSocket listener;
         public static List<int> portNums;
         public static int currentPortNum;
+        //Connections between our Network Elements
         public Dictionary<int, int> connections;
+        //Map packet.targetPort to <inputPort,outputPort> 
+        public Dictionary<int, Dictionary<int, int>> targetPorts;
         public Packet packet;
 
         
 
         static void Main(string[] args)
         {
+            Console.SetWindowSize(75, 20);
+            Console.SetWindowPosition(0, 0);
             string[] lines = File.ReadAllLines(args[0]);
             portNums = new List<int>();
             foreach (string line in lines)
@@ -32,6 +37,7 @@ namespace TSST
             }
             CableCloud cc = new CableCloud();
             cc.readConnections();
+            cc.readTargetPorts();
             Console.ReadKey();
         }
 
@@ -72,11 +78,33 @@ namespace TSST
             }
         }
 
-        public int handlePacket(Packet p)
+        public void readTargetPorts()
+        {
+            string[] lines = File.ReadAllLines("..\\..\\..\\TEST\\configs\\CableCloudTargetPorts.conf");
+            targetPorts = new Dictionary<int, Dictionary<int, int>>();
+            foreach (string line in lines)
+            {
+                string[] ports = line.Split(' ');
+                if (!targetPorts.ContainsKey(Int32.Parse(ports[0])))
+                {
+                    targetPorts.Add(Int32.Parse(ports[0]), new Dictionary<int, int> {
+                        {Int32.Parse(ports[1]),Int32.Parse(ports[2])}
+                    });
+                }
+                else
+                {
+                    targetPorts[Int32.Parse(ports[0])].Add(Int32.Parse(ports[1]), Int32.Parse(ports[2]));
+                }
+            }
+        }
+
+        public int handlePacket(Packet p, int port)
         {
             packet = p;
-            Console.WriteLine("Got packet with data: {0} \n sending to port {1}", packet.data, packet.targetPort);
-            sender.sendMessage(packet.serialize(), packet.targetPort);
+            Console.WriteLine("PORT: {0}", port);
+            Console.WriteLine("TargetPort: {0}", packet.targetPort);
+            Console.WriteLine("Got packet with data: {0} \n sending to port {1}", packet.data, targetPorts[packet.targetPort][port]);
+            sender.sendMessage(packet.serialize(), targetPorts[packet.targetPort][port]);
             return 0;
         }
     }
