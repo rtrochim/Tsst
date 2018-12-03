@@ -24,11 +24,11 @@ namespace TSST
             string[] lines = File.ReadAllLines(args[0]);
             listenerPort = Int32.Parse(lines[0]);
             targetPort = Int32.Parse(lines[1]);
-            Node n = new Node();
+            Node n = new Node(args[0]);
             Console.ReadKey();
         }
 
-        public Node()
+        public Node(string pathToLabelTable)
         {
             Console.WriteLine(@"
   _   _  ____  _____  ______ 
@@ -44,8 +44,8 @@ namespace TSST
             Thread childThread = new Thread(childref);
             childThread.Start();
             this.sender = new SenderSocket();
-            //this.sender.sendMessage("Hello world from node!<EOF>", targetPort);
             sf = new SwitchingField();
+            sf.setLabelTable(pathToLabelTable);
         }
 
         public void listeningThread()
@@ -56,8 +56,10 @@ namespace TSST
 
         public int handlePacket(Packet p, int port)
         {
+            Console.WriteLine("testdupa");
             packet = p;
-            Console.WriteLine("Got packet with data: {0} \n sending to port {1}", packet.data, packet.targetPort);
+            sf.commutatePacket(ref packet);
+            this.sender.sendMessage(packet.serialize(), targetPort);
             return 0;
         }
     }

@@ -15,8 +15,9 @@ namespace TSST
     {
         public ListenerSocket listener;
         public SenderSocket sender;
-        public static int listenerPort;
-        public static int targetPort;
+        public int listenerPort;
+        public int targetPort;
+        public int adjacentNodePort;
         public Packet packet;
 
         static void Main(string[] args)
@@ -24,16 +25,17 @@ namespace TSST
             Console.SetWindowSize(45, 20);
             Thread.Sleep(1000);
             string[] lines = File.ReadAllLines(args[0]);
-            listenerPort = Int32.Parse(lines[0]);
-            targetPort = Int32.Parse(lines[1]);
             Client c = new Client();
+            c.listenerPort = Int32.Parse(lines[0]);
+            c.targetPort = Int32.Parse(lines[1]);
+            c.adjacentNodePort = Int32.Parse(lines[2]);
             Console.WriteLine("Give me some data: ");
             string message = Console.ReadLine();
             Console.WriteLine("Gimme the port: ");
             string portNumber = Console.ReadLine();
-            Packet packetToSend = new Packet(message, Int32.Parse(portNumber));
+            Packet packetToSend = new Packet(message, Int32.Parse(portNumber),c.adjacentNodePort);
 
-            c.sender.sendMessage(packetToSend.serialize(), targetPort);
+            c.sender.sendMessage(packetToSend.serialize(), c.targetPort);
             Console.ReadKey();
         }
 
