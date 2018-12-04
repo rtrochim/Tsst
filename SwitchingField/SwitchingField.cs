@@ -58,7 +58,7 @@ namespace TSST
                 Console.WriteLine("Set nextHop: {0}", entry.Item4);
                 packet.nextHop = Int32.Parse(entry.Item4);
 
-                if (entry.Item3 != "-")
+                if (entry.Item3 != "-----")
                 {
                     packet.labels.Add(entry.Item3);
                 }
