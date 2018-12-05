@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
 using System.IO;
 
@@ -15,7 +12,7 @@ namespace TSST
         public static List<int> portNums;
         public static int currentPortNum;
         //Connections between our Network Elements
-        public List<KeyValuePair<int,int>> connections;
+        public List<Tuple<int,int>> connections;
         public Packet packet;
 
         
@@ -58,7 +55,7 @@ namespace TSST
                 childThread.Start();
                 Thread.Sleep(100);
             }
-            this.connections = new List<KeyValuePair<int, int>>();
+            this.connections = new List<Tuple<int,int>>();
         }
         public void listeningThread()
         {
@@ -70,9 +67,8 @@ namespace TSST
             foreach(string line in lines)
             {
                 string[] ports = line.Split(' ');
-                this.connections.Add(new KeyValuePair<int, int>(Int32.Parse(ports[0]), Int32.Parse(ports[1])));
+                this.connections.Add(new Tuple<int,int>(Int32.Parse(ports[0]), Int32.Parse(ports[1])));
             }
-            // this.connections.FindAll(item => item.Key == 11005);
         }
 
 
@@ -80,7 +76,14 @@ namespace TSST
         {
             packet = p;
             Console.WriteLine("Got packet with data: {0} \n on port {1}, \n sending to port {2}", packet.data, port , packet.nextHop);
-            sender.sendMessage(packet.serialize(), packet.nextHop);
+            if (this.connections.Find(item => (item.Item1 == packet.nextHop)) != null || this.connections.Find(item => (item.Item2 == packet.nextHop)) != null)
+            {
+                sender.sendMessage(packet.serialize(), packet.nextHop);
+            }
+            else
+            {
+                Console.WriteLine("Cannot send packet to port {0} - no such connection!", packet.nextHop);
+            }
             return 0;
         }
     }

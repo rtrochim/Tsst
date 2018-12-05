@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 
 namespace TSST
 {
@@ -48,17 +47,17 @@ namespace TSST
                 {
                     this.sender.Connect(this.remoteEP);
 
-                    Console.WriteLine("Socket connected to {0}",
-                        this.sender.RemoteEndPoint.ToString());
+                    // Console.WriteLine("Socket connected to {0}",
+                       // this.sender.RemoteEndPoint.ToString());
                    
 
                     // Send the data through the socket.  
                     int bytesSent = this.sender.Send(msg);
 
                     // Receive the response from the remote device.  
-                    int bytesRec = this.sender.Receive(bytes);
-                    Console.WriteLine("Echoed test = {0}",
-                        Encoding.ASCII.GetString(bytes, 0, bytesRec));
+                    // int bytesRec = this.sender.Receive(bytes);
+                    // Console.WriteLine("Echoed test = {0}",
+                        // Encoding.ASCII.GetString(bytes, 0, bytesRec));
 
                     // Release the socket.  
                     this.sender.Shutdown(SocketShutdown.Both);

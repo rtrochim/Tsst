@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
 using System.Collections.Generic;
-using System.Threading;
 using System.IO;
 
 namespace TSST
@@ -16,9 +12,11 @@ namespace TSST
           
         }
 
-        public void setLabelTable(string pathToLabelTable)
+        public List<string> setLabelTable(string pathToLabelTable)
         {
+
             List<string> lines = new List<string>(File.ReadAllLines(pathToLabelTable));
+            List<string> linesToReturn = new List<string>(lines);
             lines.RemoveAt(0);
             lines.RemoveAt(0);
             lines.RemoveAt(0);
@@ -30,10 +28,11 @@ namespace TSST
                labelTable.Add(Tuple.Create(temp[0], temp[1], temp[2], temp[3]));
             }
 
-            foreach (Tuple<string, string, string, string> element in labelTable)
-            {
-                Console.WriteLine("Data read from file: {0} , {1}, {2}, {3}",element.Item1, element.Item2, element.Item3, element.Item4);
-            }
+            //foreach (Tuple<string, string, string, string> element in labelTable)
+            //{
+            //    Console.WriteLine("Data read from file: {0} , {1}, {2}, {3}",element.Item1, element.Item2, element.Item3, element.Item4);
+            //}
+            return linesToReturn;
         }
 
         public void commutatePacket(ref Packet packet)
@@ -51,7 +50,7 @@ namespace TSST
             else
             {
                 string label = packet.labels[packet.labels.Count - 1];
-                Console.WriteLine("Got pachet with label {0}, removed it.", label);
+                Console.WriteLine("Got packet with label {0}, removed it.", label);
                 packet.labels.RemoveAt(packet.labels.Count - 1);
                 Tuple<string, string, string, string> entry = labelTable.Find(item => (item.Item1 == label));
                 Console.WriteLine("Set new label: {0}", entry.Item3);

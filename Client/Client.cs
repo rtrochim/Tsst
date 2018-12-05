@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
-using System.Collections.Generic;
 using System.Threading;
 using System.IO;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 
 namespace TSST
 {
@@ -23,20 +17,23 @@ namespace TSST
         static void Main(string[] args)
         {
             Console.SetWindowSize(45, 20);
-            Thread.Sleep(1000);
+            Thread.Sleep(600);
             string[] lines = File.ReadAllLines(args[0]);
             Client c = new Client();
             c.listenerPort = Int32.Parse(lines[0]);
             c.targetPort = Int32.Parse(lines[1]);
             c.adjacentNodePort = Int32.Parse(lines[2]);
-            Console.WriteLine("Give me some data: ");
-            string message = Console.ReadLine();
-            Console.WriteLine("Gimme the port: ");
-            string portNumber = Console.ReadLine();
-            Packet packetToSend = new Packet(message, Int32.Parse(portNumber),c.adjacentNodePort);
+            Thread.Sleep(200);
+            while (true)
+            {
+                Console.Write("Data to send: ");
+                string message = Console.ReadLine();
+                Console.Write("Port to send data to: ");
+                string portNumber = Console.ReadLine();
+                Packet packetToSend = new Packet(message, Int32.Parse(portNumber), c.adjacentNodePort);
 
-            c.sender.sendMessage(packetToSend.serialize(), c.targetPort);
-            Console.ReadKey();
+                c.sender.sendMessage(packetToSend.serialize(), c.targetPort);
+            }
         }
 
         public Client()
@@ -67,7 +64,7 @@ namespace TSST
         public int handlePacket(Packet p, int port)
         {
             packet = p;
-            Console.WriteLine(packet.data);
+            Console.WriteLine(Environment.NewLine + $"Got packet with message: {packet.data}");
             return 0;
         }
     }
