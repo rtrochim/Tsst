@@ -1,0 +1,4 @@
+C:\Users\Radek\Desktop\Visual\TSST\SenderSocket\bin\Release\SenderSocket.dll
+C:\Users\Radek\Desktop\Visual\TSST\SenderSocket\bin\Release\SenderSocket.pdb
+C:\Users\Radek\Desktop\Visual\TSST\SenderSocket\obj\Release\SenderSocket.dll
+C:\Users\Radek\Desktop\Visual\TSST\SenderSocket\obj\Release\SenderSocket.pdb

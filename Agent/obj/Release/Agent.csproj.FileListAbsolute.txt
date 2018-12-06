@@ -1,0 +1,5 @@
+C:\Users\Radek\Desktop\Visual\TSST\Agent\bin\Release\Agent.dll
+C:\Users\Radek\Desktop\Visual\TSST\Agent\bin\Release\Agent.pdb
+C:\Users\Radek\Desktop\Visual\TSST\Agent\obj\Release\Agent.csprojResolveAssemblyReference.cache
+C:\Users\Radek\Desktop\Visual\TSST\Agent\obj\Release\Agent.dll
+C:\Users\Radek\Desktop\Visual\TSST\Agent\obj\Release\Agent.pdb

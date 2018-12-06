@@ -1,0 +1,5 @@
+C:\Users\Radek\Desktop\Visual\TSST\Manager\bin\Release\Manager.dll
+C:\Users\Radek\Desktop\Visual\TSST\Manager\bin\Release\Manager.pdb
+C:\Users\Radek\Desktop\Visual\TSST\Manager\obj\Release\Manager.csprojResolveAssemblyReference.cache
+C:\Users\Radek\Desktop\Visual\TSST\Manager\obj\Release\Manager.dll
+C:\Users\Radek\Desktop\Visual\TSST\Manager\obj\Release\Manager.pdb

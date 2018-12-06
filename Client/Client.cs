@@ -24,16 +24,10 @@ namespace TSST
             c.targetPort = Int32.Parse(lines[1]);
             c.adjacentNodePort = Int32.Parse(lines[2]);
             Thread.Sleep(200);
-            while (true)
-            {
-                Console.Write("Data to send: ");
-                string message = Console.ReadLine();
-                Console.Write("Port to send data to: ");
-                string portNumber = Console.ReadLine();
-                Packet packetToSend = new Packet(message, Int32.Parse(portNumber), c.adjacentNodePort);
+            ThreadStart senderThread= new ThreadStart(() => c.sendPacket());
+            Thread childThread = new Thread(senderThread);
+            childThread.Start();
 
-                c.sender.sendMessage(packetToSend.serialize(), c.targetPort);
-            }
         }
 
         public Client()
@@ -61,11 +55,28 @@ namespace TSST
             this.listener = new ListenerSocket(listenerPort, handlePacket);
         }
 
+        public void sendPacket()
+        {
+            while (true)
+            {
+                Console.Write("Data to send: ");
+                string message = Console.ReadLine();
+                Console.Write("Port to send data to: ");
+                string portNumber = Console.ReadLine();
+                Packet packetToSend = new Packet(message, Int32.Parse(portNumber), this.adjacentNodePort);
+
+                this.sender.sendMessage(packetToSend.serialize(), this.targetPort);
+            }
+        }
+
         public int handlePacket(Packet p, int port)
         {
-            packet = p;
-            Console.WriteLine(Environment.NewLine + $"Got packet with message: {packet.data}");
-            return 0;
+            lock (this)
+            {
+                packet = p;
+                Console.WriteLine(Environment.NewLine + $"Got packet with message: {packet.data}");
+                return 0;
+            }
         }
     }
 }

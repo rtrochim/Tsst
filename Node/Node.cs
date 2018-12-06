@@ -57,20 +57,21 @@ namespace TSST
 
         public int handlePacket(Packet p, int port)
         {
-            packet = p;
-            try
+            lock (this)
             {
-                sf.commutatePacket(ref packet);
-                this.sender.sendMessage(packet.serialize(), targetPort);
+                packet = p;
+                try
+                {
+                    sf.commutatePacket(ref packet);
+                    this.sender.sendMessage(packet.serialize(), targetPort);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("ERROR: Cannot commutate this Packet!");
+                }
+                return 0;
             }
-            catch(Exception e)
-            {
-                Console.WriteLine("ERROR: Cannot commutate this Packet!");
-            }
-       
-            return 0;
         }
-
         public static void watchTable(string path, Node n)
         {
             List<string> linesToCompare = new List<string>(n.sf.setLabelTable(path));

@@ -1,0 +1,5 @@
+C:\Users\Radek\Desktop\Visual\TSST\Port\bin\Release\Port.dll
+C:\Users\Radek\Desktop\Visual\TSST\Port\bin\Release\Port.pdb
+C:\Users\Radek\Desktop\Visual\TSST\Port\obj\Release\Port.csprojResolveAssemblyReference.cache
+C:\Users\Radek\Desktop\Visual\TSST\Port\obj\Release\Port.dll
+C:\Users\Radek\Desktop\Visual\TSST\Port\obj\Release\Port.pdb

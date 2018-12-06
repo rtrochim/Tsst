@@ -43,6 +43,7 @@ namespace TSST
             
                 Console.WriteLine("Packet has no label");
                 Tuple<string, string, string, string> entry = labelTable.Find(item => (item.Item2 == target.ToString()));
+                if (entry == null) throw new Exception();
                 packet.labels.Add(entry.Item3);
                 packet.nextHop = Int32.Parse(entry.Item4);
                 Console.WriteLine("Packet got a new label: {0}, and nextHop set to {1}", entry.Item3, entry.Item4);
@@ -53,6 +54,7 @@ namespace TSST
                 Console.WriteLine("Got packet with label {0}, removed it.", label);
                 packet.labels.RemoveAt(packet.labels.Count - 1);
                 Tuple<string, string, string, string> entry = labelTable.Find(item => (item.Item1 == label));
+                if(entry == null) throw new Exception();
                 Console.WriteLine("Set new label: {0}", entry.Item3);
                 Console.WriteLine("Set nextHop: {0}", entry.Item4);
                 packet.nextHop = Int32.Parse(entry.Item4);

@@ -1,0 +1,10 @@
+C:\Users\Radek\Desktop\Visual\TSST\ManagementCenter\bin\Release\ManagementCenter.exe.config
+C:\Users\Radek\Desktop\Visual\TSST\ManagementCenter\bin\Release\ManagementCenter.exe
+C:\Users\Radek\Desktop\Visual\TSST\ManagementCenter\bin\Release\ManagementCenter.pdb
+C:\Users\Radek\Desktop\Visual\TSST\ManagementCenter\bin\Release\Agent.dll
+C:\Users\Radek\Desktop\Visual\TSST\ManagementCenter\bin\Release\Manager.dll
+C:\Users\Radek\Desktop\Visual\TSST\ManagementCenter\bin\Release\Agent.pdb
+C:\Users\Radek\Desktop\Visual\TSST\ManagementCenter\bin\Release\Manager.pdb
+C:\Users\Radek\Desktop\Visual\TSST\ManagementCenter\obj\Release\ManagementCenter.csprojResolveAssemblyReference.cache
+C:\Users\Radek\Desktop\Visual\TSST\ManagementCenter\obj\Release\ManagementCenter.exe
+C:\Users\Radek\Desktop\Visual\TSST\ManagementCenter\obj\Release\ManagementCenter.pdb

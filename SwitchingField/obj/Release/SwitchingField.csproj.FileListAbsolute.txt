@@ -1,0 +1,11 @@
+C:\Users\Radek\Desktop\Visual\TSST\SwitchingField\bin\Release\SwitchingField.dll
+C:\Users\Radek\Desktop\Visual\TSST\SwitchingField\bin\Release\SwitchingField.pdb
+C:\Users\Radek\Desktop\Visual\TSST\SwitchingField\bin\Release\ListenerSocket.dll
+C:\Users\Radek\Desktop\Visual\TSST\SwitchingField\bin\Release\Packet.dll
+C:\Users\Radek\Desktop\Visual\TSST\SwitchingField\bin\Release\SenderSocket.dll
+C:\Users\Radek\Desktop\Visual\TSST\SwitchingField\bin\Release\ListenerSocket.pdb
+C:\Users\Radek\Desktop\Visual\TSST\SwitchingField\bin\Release\Packet.pdb
+C:\Users\Radek\Desktop\Visual\TSST\SwitchingField\bin\Release\SenderSocket.pdb
+C:\Users\Radek\Desktop\Visual\TSST\SwitchingField\obj\Release\SwitchingField.csprojResolveAssemblyReference.cache
+C:\Users\Radek\Desktop\Visual\TSST\SwitchingField\obj\Release\SwitchingField.dll
+C:\Users\Radek\Desktop\Visual\TSST\SwitchingField\obj\Release\SwitchingField.pdb

@@ -9,6 +9,7 @@ namespace TSST
     {
         static void Main(string[] args)
         {
+            Console.SetWindowSize(75, 20);
             Agent agent;
             ManagementCenter mc = new ManagementCenter();
             while (true)
@@ -39,8 +40,6 @@ What to do:");
 
                 }
             }
-            
-
         }
 
 
@@ -84,7 +83,21 @@ What to do:");
             foreach( string line in lines)
             {
                 string[] values = line.Split(' ');
-                Console.WriteLine($@"║ {i} ║     {values[0]}     ║   {values[1]}    ║    {values[2]}     ║ {values[3]} ║");
+                string[] toInsert = new string[4];
+                for(int j = 0; j < 11-values[0].Length; j++)
+                {
+                    toInsert[0] += " ";
+                }
+                toInsert[0] = toInsert[0].Insert(floorDivide(11 - values[0].Length, 2), values[0]);
+                toInsert[1] = values[1];
+                for (int j = 0; j < 10 - values[2].Length; j++)
+                {
+                    toInsert[2] += " ";
+                }
+                toInsert[0] = toInsert[2].Insert(floorDivide(10 - values[2].Length, 2), values[2]);
+                toInsert[3] = values[3];
+
+                Console.WriteLine($@"║ {i} ║{toInsert[0]}║   {toInsert[1]}    ║{toInsert[2]}║ {toInsert[3]} ║");
                 i++;
             }
 
@@ -147,6 +160,11 @@ What to do:");
                 Console.WriteLine("ERROR: {0}", e.Message);
                 return;
             }
+        }
+
+        public static int floorDivide(int a, int b)
+        {
+            return (a / b - Convert.ToInt32(((a < 0) ^ (b < 0)) && (a % b != 0)));
         }
     }
 }

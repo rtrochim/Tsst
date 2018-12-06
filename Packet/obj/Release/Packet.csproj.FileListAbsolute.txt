@@ -1,0 +1,4 @@
+C:\Users\Radek\Desktop\Visual\TSST\Packet\bin\Release\Packet.dll
+C:\Users\Radek\Desktop\Visual\TSST\Packet\bin\Release\Packet.pdb
+C:\Users\Radek\Desktop\Visual\TSST\Packet\obj\Release\Packet.dll
+C:\Users\Radek\Desktop\Visual\TSST\Packet\obj\Release\Packet.pdb

@@ -31,6 +31,31 @@ namespace TSST
             }
             CableCloud cc = new CableCloud();
             cc.readConnections();
+            while (true)
+            {
+                Console.WriteLine(@"
+[L] List connections
+[T] Terminate connection
+[A] Add connection
+What to do:");
+                string option = Console.ReadLine();
+                switch (option)
+                {
+                    case "L":
+                        cc.listConnections();
+                        break;
+                    case "A":
+                        cc.addConnection();
+                        break;
+                    case "T":
+                        cc.terminateConnection();
+                        break;
+                    default:
+                        Console.WriteLine("Invalid option!");
+                        break;
+
+                }
+            }
             Console.ReadKey();
         }
 
@@ -63,6 +88,7 @@ namespace TSST
         }
         public void readConnections()
         {
+            this.connections = new List<Tuple<int, int>>();
             string[] lines = File.ReadAllLines("..\\..\\..\\TEST\\configs\\NetworkConnections.conf");
             foreach(string line in lines)
             {
@@ -75,16 +101,110 @@ namespace TSST
         public int handlePacket(Packet p, int port)
         {
             packet = p;
-            Console.WriteLine("Got packet with data: {0} \n on port {1}, \n sending to port {2}", packet.data, port , packet.nextHop);
-            if (this.connections.Find(item => (item.Item1 == packet.nextHop)) != null || this.connections.Find(item => (item.Item2 == packet.nextHop)) != null)
+            lock(this)
             {
-                sender.sendMessage(packet.serialize(), packet.nextHop);
+                Console.WriteLine("Got packet with data: {0} \n on port {1}, \n sending to port {2}", packet.data, port, packet.nextHop);
+                if ((this.connections.Find(item => (item.Item1 == packet.nextHop)) != null && this.connections.Find(item => (item.Item2 == packet.nextHop)) != null) || packet.nextHop == packet.targetPort)
+                {
+                    Thread.Sleep(300);
+                    sender.sendMessage(packet.serialize(), packet.nextHop);
+                }
+                else
+                {
+                    Console.WriteLine("Cannot send packet to port {0} - no such connection!", packet.nextHop);
+                }
+                return 0;
             }
-            else
+        }
+
+        public void listConnections()
+        {
+            string[] lines;
+            int i = 1;
+            string path = @"..\..\..\TEST\configs\NetworkConnections.conf";
+            try
             {
-                Console.WriteLine("Cannot send packet to port {0} - no such connection!", packet.nextHop);
+                List<string> linesList = new List<string>(File.ReadAllLines(path));
+                lines = linesList.ToArray();
             }
-            return 0;
+            catch (Exception e)
+            {
+                Console.WriteLine("ERROR: {0}", e.Message);
+                return;
+            }
+            Console.WriteLine(@"
+╔═══╦═══════╦════════╗
+║ID ║   1   ║    2   ║
+╠═══╬═══════╬════════║");
+            foreach (string line in lines)
+            {
+                string[] values = line.Split(' ');
+
+                Console.WriteLine($@"║ {i} ║ {values[0]} ║  {values[1]} ║");
+                i++;
+            }
+
+            Console.WriteLine(@"╚═══╩═══════╩════════╝");
+
+
+        }
+
+        public void terminateConnection()
+        {
+            int lineToDelete;
+            listConnections();
+            string path = @"..\..\..\TEST\configs\NetworkConnections.conf";
+            Console.WriteLine("Which ID do you want to delete?");
+            try
+            {
+                lineToDelete = Int32.Parse(Console.ReadLine());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Wrong ID");
+                return;
+            }
+            try
+            {
+                List<string> linesList = new List<string>(File.ReadAllLines(path));
+                linesList.RemoveAt(lineToDelete - 1);
+                File.WriteAllLines(path, linesList.ToArray());
+                this.connections.RemoveAll(item => item.Item1 != null);
+                this.readConnections();
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine("ERROR: {0}", err.Message);
+                return;
+            }
+        }
+
+        public void addConnection()
+        {
+            string lineToAdd;
+            string path = @"..\..\..\TEST\configs\NetworkConnections.conf";
+            Console.WriteLine("Type in two connected ports:");
+            try
+            {
+                lineToAdd = Console.ReadLine();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Wrong format");
+                return;
+            }
+            try
+            {
+                string[] arguments = lineToAdd.Split(' ');
+                if (arguments.Length != 2) throw new ArgumentException("Incorrect number of input parameters");
+                File.AppendAllText(path, lineToAdd + Environment.NewLine );
+                this.readConnections();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("ERROR: {0}", e.Message);
+                return;
+            }
         }
     }
 }
