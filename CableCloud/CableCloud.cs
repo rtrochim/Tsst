@@ -100,9 +100,9 @@ What to do:");
 
         public int handlePacket(Packet p, int port)
         {
-            packet = p;
-            lock(this)
+            lock (this)
             {
+                packet = p;
                 Console.WriteLine("Got packet with data: {0} \n on port {1}, \n sending to port {2}", packet.data, port, packet.nextHop);
                 if ((this.connections.Find(item => (item.Item1 == packet.nextHop)) != null && this.connections.Find(item => (item.Item2 == packet.nextHop)) != null) || packet.nextHop == packet.targetPort)
                 {

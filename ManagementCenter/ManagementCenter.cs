@@ -94,7 +94,7 @@ What to do:");
                 {
                     toInsert[2] += " ";
                 }
-                toInsert[0] = toInsert[2].Insert(floorDivide(10 - values[2].Length, 2), values[2]);
+                toInsert[2] = toInsert[2].Insert(floorDivide(10 - values[2].Length, 2), values[2]);
                 toInsert[3] = values[3];
 
                 Console.WriteLine($@"║ {i} ║{toInsert[0]}║   {toInsert[1]}    ║{toInsert[2]}║ {toInsert[3]} ║");

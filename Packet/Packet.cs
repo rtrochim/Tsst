@@ -20,7 +20,6 @@ namespace TSST
 
         public Packet(string data, int targetPort, int nextHop)
         {
-
             packetID++;
             this.labels = new List<string>();
             this.data = data;

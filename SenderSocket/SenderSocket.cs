@@ -10,13 +10,18 @@ namespace TSST
         public SynchronousSocketClient socketClient;
         public SenderSocket()
         {
-            this.socketClient = new SynchronousSocketClient();
+            lock (this)
+            {
+                this.socketClient = new SynchronousSocketClient();
+            }
         }
 
         public void sendMessage(byte[] msg, int port)
         {
             Console.WriteLine("Sent packet to port: {0}", port);
             this.socketClient.SendMessage(msg, port);
+            Console.WriteLine("══════════════════════════════════");
+
         }
     }
 
