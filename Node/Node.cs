@@ -3,33 +3,43 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace TSST
 {
     class Node
     {
+        [DllImport("kernel32.dll", SetLastError = true)]
+        static extern IntPtr GetConsoleWindow();
+
+        [DllImport("user32.dll", SetLastError = true)]
+        internal static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
+
         public ListenerSocket listener;
         public SenderSocket sender;
         public static int listenerPort;
         public static int targetPort;
         public SwitchingField sf;
         public Packet packet;
-   
+
         static void Main(string[] args)
         {
-            Console.SetWindowSize(45, 20);
+            IntPtr ptr = GetConsoleWindow();
+            MoveWindow(ptr, Int32.Parse(args[1]), Int32.Parse(args[2]), 1000, 400, true);
+
+            Console.SetWindowSize(35, 17);
             Thread.Sleep(1000);
             string[] lines = File.ReadAllLines(args[0]);
             listenerPort = Int32.Parse(lines[0]);
             targetPort = Int32.Parse(lines[1]);
             Node n = new Node(args[0]);
-            ThreadStart childref = new ThreadStart(() => watchTable(args[0], n));
-            Thread watchThread = new Thread(childref);
-            watchThread.Start();
-
-            Console.ReadKey();
+            lock (n)
+            {
+                ThreadStart childref = new ThreadStart(() => watchTable(args[0], n));
+                Thread watchThread = new Thread(childref);
+                watchThread.Start();
+            }
         }
-
         public Node(string pathToLabelTable)
         {
             Console.WriteLine(@"
@@ -38,10 +48,7 @@ namespace TSST
  |  \| | |  | | |  | | |__   
  | . ` | |  | | |  | |  __|  
  | |\  | |__| | |__| | |____ 
- |_| \_|\____/|_____/|______|
-                             
-                             
-");
+ |_| \_|\____/|_____/|______|");
             ThreadStart childref = new ThreadStart(listeningThread);
             Thread childThread = new Thread(childref);
             childThread.Start();
@@ -62,18 +69,19 @@ namespace TSST
                 packet = p;
                 try
                 {
-                    sf.commutatePacket(ref packet);
+                    sf.commutatePacket(ref packet, port);
                     this.sender.sendMessage(packet.serialize(), targetPort);
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine("ERROR: Cannot commutate this Packet!");
+                    Console.WriteLine(e.ToString());
                 }
                 return 0;
             }
         }
         public static void watchTable(string path, Node n)
-        {
+        {   
             List<string> linesToCompare = new List<string>(n.sf.setLabelTable(path));
             while (true)
             {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 
 namespace TSST
 {
@@ -21,6 +22,7 @@ namespace TSST
             Console.WriteLine("Sent packet to port: {0}", port);
             this.socketClient.SendMessage(msg, port);
             Console.WriteLine("══════════════════════════════════");
+            Thread.Yield();
 
         }
     }

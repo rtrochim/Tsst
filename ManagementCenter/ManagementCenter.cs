@@ -2,47 +2,59 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace TSST
 {
     class ManagementCenter
     {
+        [DllImport("kernel32.dll", SetLastError = true)]
+        static extern IntPtr GetConsoleWindow();
+
+        [DllImport("user32.dll", SetLastError = true)]
+        internal static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
+
         static void Main(string[] args)
         {
-            Console.SetWindowSize(75, 20);
+            IntPtr ptr = GetConsoleWindow();
+            MoveWindow(ptr, Int32.Parse(args[0]), Int32.Parse(args[1]), 1000, 400, true);
+
+            Console.SetWindowSize(75, 18);
             Agent agent;
             ManagementCenter mc = new ManagementCenter();
-            while (true)
+            lock (mc)
             {
-                Console.WriteLine(@"
+                while (true)
+                {
+                    Console.WriteLine(@"
 [L] List all entries from Node
 [A] Add entry to Node
 [R] Remove entry from Node
 What to do:");
-                string option = Console.ReadLine();
-                switch (option)
-                {
-                    case "L":
-                        Console.WriteLine("Which node: ");
-                        mc.listEntries(Console.ReadLine());
-                        break;
-                    case "A":
-                        Console.WriteLine("Which node: ");
-                        mc.addEntry(Console.ReadLine());
-                        break;
-                    case "R":
-                        Console.WriteLine("Which node: ");
-                        mc.deleteEntry(Console.ReadLine());
-                        break;
-                    default:
-                        Console.WriteLine("Invalid option!");
-                        break;
+                    string option = Console.ReadLine();
+                    switch (option)
+                    {
+                        case "L":
+                            Console.WriteLine("Which node: ");
+                            mc.listEntries(Console.ReadLine());
+                            break;
+                        case "A":
+                            Console.WriteLine("Which node: ");
+                            mc.addEntry(Console.ReadLine());
+                            break;
+                        case "R":
+                            Console.WriteLine("Which node: ");
+                            mc.deleteEntry(Console.ReadLine());
+                            break;
+                        default:
+                            Console.WriteLine("Invalid option!");
+                            break;
 
+                    }
                 }
             }
+
         }
-
-
         public ManagementCenter()
         {
             Console.WriteLine(@"
@@ -51,10 +63,7 @@ What to do:");
  | \  / |  /  \  |  \| |  /  \ | |  __| |__  | |__) |
  | |\/| | / /\ \ | . ` | / /\ \| | |_ |  __| |  _  / 
  | |  | |/ ____ \| |\  |/ ____ \ |__| | |____| | \ \ 
- |_|  |_/_/    \_\_| \_/_/    \_\_____|______|_|  \_\
-                                                     
-                                                     
-");
+ |_|  |_/_/    \_\_| \_/_/    \_\_____|______|_|  \_\");
         }
 
         public void listEntries(string nodeID)

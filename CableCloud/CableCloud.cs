@@ -2,11 +2,20 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.IO;
+using System.Runtime.InteropServices;
+
 
 namespace TSST
 {
+
     class CableCloud
     {
+        [DllImport("kernel32.dll", SetLastError = true)]
+        static extern IntPtr GetConsoleWindow();
+
+        [DllImport("user32.dll", SetLastError = true)]
+        internal static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
+
         SenderSocket sender;
         ListenerSocket listener;
         public static List<int> portNums;
@@ -15,11 +24,13 @@ namespace TSST
         public List<Tuple<int,int>> connections;
         public Packet packet;
 
-        
+
 
         static void Main(string[] args)
         {
-            Console.SetWindowSize(75, 20);
+            IntPtr ptr = GetConsoleWindow();
+            MoveWindow(ptr, Int32.Parse(args[1]), Int32.Parse(args[2]), 1000, 400, true);
+            Console.SetWindowSize(75, 18);
             string[] lines = File.ReadAllLines(args[0]);
             portNums = new List<int>();
             foreach (string line in lines)
@@ -56,7 +67,6 @@ What to do:");
 
                 }
             }
-            Console.ReadKey();
         }
 
         public CableCloud()
@@ -67,9 +77,7 @@ What to do:");
  | |       /  \  | |_) | |    | |__    | |    | |   | |  | | |  | | |  | |
  | |      / /\ \ |  _ <| |    |  __|   | |    | |   | |  | | |  | | |  | |
  | |____ / ____ \| |_) | |____| |____  | |____| |___| |__| | |__| | |__| |
-  \_____/_/    \_\____/|______|______|  \_____|______\____/ \____/|_____/ 
-                                                                          
-                                                                          ");
+  \_____/_/    \_\____/|______|______|  \_____|______\____/ \____/|_____/ ");
 
             this.sender = new SenderSocket();
             for (int i = 0; i < portNums.Count; i++)
@@ -103,16 +111,17 @@ What to do:");
             lock (this)
             {
                 packet = p;
-                Console.WriteLine("Got packet with data: {0} \n on port {1}, \n sending to port {2}", packet.data, port, packet.nextHop);
+                Console.WriteLine("Got packet with data: {0} \n on port {1}, \n+ sending to port {2}", packet.data, port, packet.nextHop);
                 if ((this.connections.Find(item => (item.Item1 == packet.nextHop)) != null && this.connections.Find(item => (item.Item2 == packet.nextHop)) != null) || packet.nextHop == packet.targetPort)
                 {
-                    Thread.Sleep(300);
+                    Thread.Sleep(400);
                     sender.sendMessage(packet.serialize(), packet.nextHop);
                 }
                 else
                 {
                     Console.WriteLine("Cannot send packet to port {0} - no such connection!", packet.nextHop);
                 }
+                Thread.Yield();
                 return 0;
             }
         }
@@ -169,7 +178,7 @@ What to do:");
                 List<string> linesList = new List<string>(File.ReadAllLines(path));
                 linesList.RemoveAt(lineToDelete - 1);
                 File.WriteAllLines(path, linesList.ToArray());
-                this.connections.RemoveAll(item => item.Item1 != null);
+                this.connections.RemoveAll(item => true);
                 this.readConnections();
             }
             catch (Exception err)

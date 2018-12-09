@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 
 namespace TSST
 {
@@ -35,34 +36,35 @@ namespace TSST
             return linesToReturn;
         }
 
-        public void commutatePacket(ref Packet packet)
+        public void commutatePacket(ref Packet packet, int port)
         {
             int target = packet.targetPort;
-            Console.WriteLine("Switching Field handles the Packet");
-            if(packet.labels.Count == 0) { 
-            
-                Console.WriteLine("Packet has no label");
+            if(packet.labels.Count == 0) {
+                Console.WriteLine(@"
+║EntryPort║Data║Labels║NextHop║TargetPort║
+══════════════════════════════════════════");
+                Console.WriteLine($"{port}, {packet.data}, - , {packet.nextHop}, {packet.targetPort}");
                 Tuple<string, string, string, string> entry = labelTable.Find(item => (item.Item2 == target.ToString()));
                 if (entry == null) throw new Exception();
                 packet.labels.Add(entry.Item3);
                 packet.nextHop = Int32.Parse(entry.Item4);
-                Console.WriteLine("Packet got a new label set: {0}, and nextHop set to {1}", entry.Item3, entry.Item4);
+                Console.WriteLine($"{port}, {packet.data}, {packet.labels[packet.labels.Count - 1]}, {packet.nextHop}, {packet.targetPort}");
+                Thread.Yield();
             }
             else
             {
                 string label = packet.labels[packet.labels.Count - 1];
-                Console.WriteLine("Got packet with labels: {0}, removed.", label);
                 packet.labels.RemoveAt(packet.labels.Count - 1);
                 Tuple<string, string, string, string> entry = labelTable.Find(item => (item.Item1 == label));
                 if(entry == null) throw new Exception();
-                Console.WriteLine("Set new label: {0}", entry.Item3);
-                Console.WriteLine("Set nextHop: {0}", entry.Item4);
                 packet.nextHop = Int32.Parse(entry.Item4);
 
                 if (entry.Item3 != "-----")
                 {
                     packet.labels.Add(entry.Item3);
                 }
+                Console.WriteLine($"{port}, {packet.data}, {packet.labels[packet.labels.Count - 1]}, {packet.nextHop}, {packet.targetPort}");
+                Thread.Yield();
             }
         }
     }
