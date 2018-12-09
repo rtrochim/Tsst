@@ -21,6 +21,7 @@ namespace TSST
         public static int targetPort;
         public SwitchingField sf;
         public Packet packet;
+        public List<int> entryPorts;
 
         static void Main(string[] args)
         {
@@ -32,7 +33,24 @@ namespace TSST
             string[] lines = File.ReadAllLines(args[0]);
             listenerPort = Int32.Parse(lines[0]);
             targetPort = Int32.Parse(lines[1]);
+
+            
             Node n = new Node(args[0]);
+            try
+            {
+                Console.Write("My interfaces: ");
+                foreach (string item in lines[2].Split(' '))
+                {
+                    n.entryPorts.Add(Int32.Parse(item));
+                    Console.Write($"{item}, ");
+                }
+                Console.Write(Environment.NewLine);
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+
             lock (n)
             {
                 ThreadStart childref = new ThreadStart(() => watchTable(args[0], n));
@@ -42,6 +60,7 @@ namespace TSST
         }
         public Node(string pathToLabelTable)
         {
+            entryPorts = new List<int>();
             Console.WriteLine(@"
   _   _  ____  _____  ______ 
  | \ | |/ __ \|  __ \|  ____|
@@ -76,6 +95,7 @@ namespace TSST
                 {
                     Console.WriteLine("ERROR: Cannot commutate this Packet!");
                     Console.WriteLine(e.ToString());
+                    Thread.Yield();
                 }
                 return 0;
             }

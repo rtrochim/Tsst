@@ -23,7 +23,7 @@ namespace TSST
         //Connections between our Network Elements
         public List<Tuple<int,int>> connections;
         public Packet packet;
-
+        public Dictionary<int, List<int>> interfacesMap;
 
 
         static void Main(string[] args)
@@ -31,17 +31,19 @@ namespace TSST
             IntPtr ptr = GetConsoleWindow();
             MoveWindow(ptr, Int32.Parse(args[1]), Int32.Parse(args[2]), 1000, 400, true);
             Console.SetWindowSize(75, 18);
+
             string[] lines = File.ReadAllLines(args[0]);
             portNums = new List<int>();
             foreach (string line in lines)
             {
                 if (line[0] != '#')
                 {
-                    portNums.Add(Int32.Parse(line));
+                    portNums.Add(Int32.Parse(line.Split(' ')[0]));
                 }
             }
             CableCloud cc = new CableCloud();
             cc.readConnections();
+            cc.readInterfaces(args[0]);
             while (true)
             {
                 Console.WriteLine(@"
@@ -110,18 +112,27 @@ What to do:");
         {
             lock (this)
             {
+                Thread.Sleep(400);
                 packet = p;
                 Console.WriteLine("Got packet with data: {0} \n on port {1}, \n+ sending to port {2}", packet.data, port, packet.nextHop);
-                if ((this.connections.Find(item => (item.Item1 == packet.nextHop)) != null && this.connections.Find(item => (item.Item2 == packet.nextHop)) != null) || packet.nextHop == packet.targetPort)
+                int targetPort = 0;
+                foreach (KeyValuePair<int, List<int>> item in interfacesMap)
                 {
-                    Thread.Sleep(400);
-                    sender.sendMessage(packet.serialize(), packet.nextHop);
+                    if(item.Value.Contains(packet.nextHop))
+                    {
+                        targetPort = item.Key;
+                    }
+                }
+                if ((this.connections.Find(item => (item.Item1 == targetPort)) != null && this.connections.Find(item => (item.Item2 == targetPort)) != null) || targetPort == packet.targetPort)
+                {
+                    sender.sendMessage(packet.serialize(), targetPort);
+                    Thread.Yield();
                 }
                 else
                 {
-                    Console.WriteLine("Cannot send packet to port {0} - no such connection!", packet.nextHop);
+                    Console.WriteLine("Cannot send packet to interface {0} - no such connection!", packet.nextHop);
+                    Thread.Yield();
                 }
-                Thread.Yield();
                 return 0;
             }
         }
@@ -214,6 +225,34 @@ What to do:");
                 Console.WriteLine("ERROR: {0}", e.Message);
                 return;
             }
+        }
+        public void readInterfaces(string path)
+        {
+            this.interfacesMap = new Dictionary<int, List<int>>();
+            string[] lines = File.ReadAllLines(path);
+            foreach(string line in lines)
+            {
+                string[] values = line.Split(' ');
+                List<int> interfaces = new List<int>();
+                int i = 0;
+                foreach(string value in values)
+                {
+                    if (i > 1)
+                    {
+                        interfaces.Add(Int32.Parse(value));
+                    }
+                    i++;
+                }
+                this.interfacesMap.Add(Int32.Parse(values[1]), interfaces);
+            }
+            //foreach(KeyValuePair<int, List<int>> item in this.interfacesMap)
+            //{
+            //    Console.WriteLine($"KEY: {item.Key}");
+            //    foreach(int nodeInterface in item.Value)
+            //    {
+            //        Console.WriteLine("VALUE: "+nodeInterface.ToString());
+            //    }
+            //}
         }
     }
 }

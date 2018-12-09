@@ -13,7 +13,7 @@ namespace TSST
     public class Packet
     {
         public List<string> labels;
-        public string data;
+        public string data; 
         public int targetPort;
         public int nextHop;
         [NonSerialized()] public static int packetID = 0;

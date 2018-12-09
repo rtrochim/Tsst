@@ -8,3 +8,4 @@ C:\Users\Lenovo\source\repos\Tsst\Agent\obj\Debug\Agent.csprojAssemblyReference.
 C:\Users\Lenovo\source\repos\Tsst\Agent\obj\Debug\Agent.csproj.CoreCompileInputs.cache
 C:\Users\Lenovo\source\repos\Tsst\Agent\obj\Debug\Agent.dll
 C:\Users\Lenovo\source\repos\Tsst\Agent\obj\Debug\Agent.pdb
+C:\Users\Radek\Desktop\Visual\TSST\Agent\obj\Debug\Agent.csprojResolveAssemblyReference.cache

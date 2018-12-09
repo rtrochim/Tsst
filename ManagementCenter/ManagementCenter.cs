@@ -49,7 +49,6 @@ What to do:");
                         default:
                             Console.WriteLine("Invalid option!");
                             break;
-
                     }
                 }
             }
@@ -86,31 +85,26 @@ What to do:");
             }
 
             Console.WriteLine(@"
-╔═══╦═══════════╦════════════╦══════════╦═══════╗
-║ID ║Entry Label║ TargetPort ║Exit Label║NextHop║
-╠═══╬═══════════╬════════════╬══════════╬═══════╣");         
+╔═══╦═════════╦══════════╦══════════╦═════════╦═══════╦═══════╗
+║ID ║EntryPort║EntryLabel║TargetPort║Operation║Operand║NextHop║
+╠═══╬═════════╬══════════╬══════════╬═════════╬═══════╬═══════╣");         
             foreach( string line in lines)
             {
                 string[] values = line.Split(' ');
-                string[] toInsert = new string[4];
-                for(int j = 0; j < 11-values[0].Length; j++)
+                string toInsert  = null;
+                for(int j = 0; j < 9-values[3].Length; j++)
                 {
-                    toInsert[0] += " ";
+                    toInsert += " ";
                 }
-                toInsert[0] = toInsert[0].Insert(floorDivide(11 - values[0].Length, 2), values[0]);
-                toInsert[1] = values[1];
-                for (int j = 0; j < 10 - values[2].Length; j++)
-                {
-                    toInsert[2] += " ";
-                }
-                toInsert[2] = toInsert[2].Insert(floorDivide(10 - values[2].Length, 2), values[2]);
-                toInsert[3] = values[3];
-
-                Console.WriteLine($@"║ {i} ║{toInsert[0]}║   {toInsert[1]}    ║{toInsert[2]}║ {toInsert[3]} ║");
+                //toInsert = toInsert.Insert(floorDivide(9 - values[3].Length, 2), values[3]);
+                string index = i > 9 ? $" {i}" : $" {i} ";
+                string instructions = values[3].Length > 4 ? $"{values[3]}" : values[3].Length == 3 ? $"   {values[3]}   " : $"   {values[3]}  ";
+                string operand = values[4].Length > 1 ? $"  {values[4]}  " : $"   {values[4]}   ";
+                Console.WriteLine($@"║{index}║  {values[0]}  ║    {values[1]}     ║  {values[2]}   ║{instructions}║{operand}║ {values[5]} ║");
                 i++;
             }
 
-            Console.WriteLine(@"╚═══╩═══════════╩════════════╩══════════╩═══════╝");
+            Console.WriteLine(@"╚═══╩═════════╩══════════╩══════════╩═════════╩═══════╩═══════╝");
 
 
         }
@@ -148,7 +142,7 @@ What to do:");
             string lineToAdd;
             listEntries(nodeID);
             string path = $@"..\..\..\TEST\configs\Node{nodeID}.conf";
-            Console.WriteLine("Type in label, target port, out label and next hop: ");
+            Console.WriteLine("Type in entry port, entry label, target port, operation, operand and next hop: ");
             try
             {
                 lineToAdd = Console.ReadLine();
@@ -161,7 +155,7 @@ What to do:");
             try
             {
                 string[] arguments = lineToAdd.Split(' ');
-                if (arguments.Count() != 4) throw new ArgumentException("Incorrect number of input parameters");
+                if (arguments.Count() != 6) throw new ArgumentException("Incorrect number of input parameters");
                 File.AppendAllText(path, lineToAdd + Environment.NewLine);
             }
             catch (Exception e)
