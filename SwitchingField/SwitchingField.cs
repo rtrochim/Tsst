@@ -85,7 +85,6 @@ namespace TSST
                 }
                 iterator++;
             }
-            Console.WriteLine($"Got data: {packet.data}");
             Console.WriteLine($"Set next hop to {entries[0].Item6}");
             packet.nextHop = Int32.Parse(entries[0].Item6);
             Thread.Yield();
