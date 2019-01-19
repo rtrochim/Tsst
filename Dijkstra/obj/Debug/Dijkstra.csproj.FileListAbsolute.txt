@@ -1,0 +1,5 @@
+C:\Users\Radek\Desktop\Visual\TSST\Dijkstra\bin\Debug\Dijkstra.dll
+C:\Users\Radek\Desktop\Visual\TSST\Dijkstra\bin\Debug\Dijkstra.pdb
+C:\Users\Radek\Desktop\Visual\TSST\Dijkstra\obj\Debug\Dijkstra.csprojResolveAssemblyReference.cache
+C:\Users\Radek\Desktop\Visual\TSST\Dijkstra\obj\Debug\Dijkstra.dll
+C:\Users\Radek\Desktop\Visual\TSST\Dijkstra\obj\Debug\Dijkstra.pdb

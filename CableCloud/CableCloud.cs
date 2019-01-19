@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.IO;
 using System.Runtime.InteropServices;
-
+using System.Linq;
 
 namespace TSST
 {
@@ -98,12 +98,37 @@ What to do:");
         }
         public void readConnections()
         {
-            this.connections = new List<Tuple<int, int>>();
-            string[] lines = File.ReadAllLines("..\\..\\..\\TEST\\configs\\NetworkConnections.conf");
-            foreach(string line in lines)
+            int[,] topology;
+            string[] lines = File.ReadAllLines("..\\..\\..\\TEST\\configs\\Topology.conf");
+            topology = new int[lines.Length, lines.Length];
+            int i = 0;
+            int j = 0;
+            foreach (string line in lines)
             {
-                string[] ports = line.Split(' ');
-                this.connections.Add(new Tuple<int,int>(Int32.Parse(ports[0]), Int32.Parse(ports[1])));
+                foreach (string l in line.Split(','))
+                {
+                    topology[i, j] = Int32.Parse(l);
+                    j++;
+                }
+                j = 0;
+                i++;
+            }
+            for (int m = 0; m < topology.GetLength(0); m++)
+            {
+                for (int n = 0; n < topology.GetLength(0); n++)
+                {
+                    if (topology[m, n] != 0)
+                    {
+                        if (!this.connections.Contains(new Tuple<int,int>(m, n)) && !this.connections.Contains(new Tuple<int,int>(n, m)))
+                        {
+                            this.connections.Add(new Tuple<int, int>(m, n));
+                        }
+                    }
+                }
+            }
+            foreach(Tuple<int,int> item in this.connections)
+            {
+                Console.WriteLine("Item1: " + item.Item1.ToString() +"Item2: "+ item.Item2.ToString());
             }
         }
 
@@ -116,6 +141,7 @@ What to do:");
                 packet = p;
                 Console.WriteLine("Got packet with data: {0} \n on port {1}, \n+ sending to port {2}", packet.data, port, packet.nextHop);
                 int targetPort = 0;
+                int targetNode = -1;
                 foreach (KeyValuePair<int, List<int>> item in interfacesMap)
                 {
                     if(item.Value.Contains(packet.nextHop))
@@ -123,7 +149,8 @@ What to do:");
                         targetPort = item.Key;
                     }
                 }
-                if ((this.connections.Find(item => (item.Item1 == targetPort)) != null && this.connections.Find(item => (item.Item2 == targetPort)) != null) || targetPort == packet.targetPort)
+                Console.WriteLine("TargetPort:" + targetPort.ToString());
+                if (this.connections.Exists(item => ((item.Item1 == targetPort - 11100 && item.Item2 == port - 12100)||(item.Item2 == targetPort - 11100 && item.Item1 == port - 12100))) || targetPort == packet.targetPort || Enumerable.Range(12000, 12003).Contains(port))
                 {
                     sender.sendMessage(packet.serialize(), targetPort);
                     Thread.Yield();
@@ -139,92 +166,17 @@ What to do:");
 
         public void listConnections()
         {
-            string[] lines;
-            int i = 1;
-            string path = @"..\..\..\TEST\configs\NetworkConnections.conf";
-            try
-            {
-                List<string> linesList = new List<string>(File.ReadAllLines(path));
-                lines = linesList.ToArray();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("ERROR: {0}", e.Message);
-                return;
-            }
-            Console.WriteLine(@"
-╔═══╦═══════╦════════╗
-║ID ║   1   ║    2   ║
-╠═══╬═══════╬════════║");
-            foreach (string line in lines)
-            {
-                string[] values = line.Split(' ');
-
-                Console.WriteLine($@"║ {i} ║ {values[0]} ║  {values[1]} ║");
-                i++;
-            }
-
-            Console.WriteLine(@"╚═══╩═══════╩════════╝");
-
-
+          
         }
 
         public void terminateConnection()
         {
-            int lineToDelete;
-            listConnections();
-            string path = @"..\..\..\TEST\configs\NetworkConnections.conf";
-            Console.WriteLine("Which ID do you want to delete?");
-            try
-            {
-                lineToDelete = Int32.Parse(Console.ReadLine());
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Wrong ID");
-                return;
-            }
-            try
-            {
-                List<string> linesList = new List<string>(File.ReadAllLines(path));
-                linesList.RemoveAt(lineToDelete - 1);
-                File.WriteAllLines(path, linesList.ToArray());
-                this.connections.RemoveAll(item => true);
-                this.readConnections();
-            }
-            catch (Exception err)
-            {
-                Console.WriteLine("ERROR: {0}", err.Message);
-                return;
-            }
+            
         }
 
         public void addConnection()
         {
-            string lineToAdd;
-            string path = @"..\..\..\TEST\configs\NetworkConnections.conf";
-            Console.WriteLine("Type in two connected ports:");
-            try
-            {
-                lineToAdd = Console.ReadLine();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Wrong format");
-                return;
-            }
-            try
-            {
-                string[] arguments = lineToAdd.Split(' ');
-                if (arguments.Length != 2) throw new ArgumentException("Incorrect number of input parameters");
-                File.AppendAllText(path, lineToAdd + Environment.NewLine );
-                this.readConnections();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("ERROR: {0}", e.Message);
-                return;
-            }
+            
         }
         public void readInterfaces(string path)
         {
@@ -245,14 +197,15 @@ What to do:");
                 }
                 this.interfacesMap.Add(Int32.Parse(values[1]), interfaces);
             }
-            //foreach(KeyValuePair<int, List<int>> item in this.interfacesMap)
-            //{
-            //    Console.WriteLine($"KEY: {item.Key}");
-            //    foreach(int nodeInterface in item.Value)
-            //    {
-            //        Console.WriteLine("VALUE: "+nodeInterface.ToString());
-            //    }
-            //}
+            foreach(KeyValuePair<int, List<int>> item in this.interfacesMap)
+            {
+                Console.WriteLine("Interface"+item.Key+":");
+                foreach(int dupa in item.Value)
+                {
+                    Console.Write(dupa.ToString()+",");
+                }
+                Console.Write(Environment.NewLine);
+            }
         }
     }
 }

@@ -102,10 +102,10 @@ namespace TSST
         }
         public static void watchTable(string path, Node n)
         {   
-            List<string> linesToCompare = new List<string>(n.sf.setLabelTable(path));
+            List<string> linesToCompare = new List<string>(n.sf.setRoutingTable(path));
             while (true)
             {
-                List<string> linesInIteration = new List<string>(n.sf.setLabelTable(path));
+                List<string> linesInIteration = new List<string>(n.sf.setRoutingTable(path));
                 if (!((linesToCompare.Count == linesInIteration.Count) && !linesToCompare.Except(linesInIteration).Any()))
                 {
                     linesToCompare = new List<string>(linesInIteration);

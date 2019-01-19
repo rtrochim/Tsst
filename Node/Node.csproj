@@ -50,10 +50,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Agent\Agent.csproj">
-      <Project>{5778981b-f193-4ba3-9dc4-e3e1dd4f85cb}</Project>
-      <Name>Agent</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ListenerSocket\ListenerSocket.csproj">
       <Project>{224bd71b-a967-4e64-9b41-d7303f46628d}</Project>
       <Name>ListenerSocket</Name>

@@ -73,8 +73,8 @@ namespace TSST
                     Console.Write("Port to send data to: ");
                     string portNumber = Console.ReadLine();
                     Packet packetToSend = new Packet(message, Int32.Parse(portNumber), this.adjacentNodePort);
-
-                    this.sender.sendMessage(packetToSend.serialize(), this.targetPort);
+                    
+                    //this.sender.sendMessage(packetToSend.serialize(), this.targetPort);
                 }
 
         }

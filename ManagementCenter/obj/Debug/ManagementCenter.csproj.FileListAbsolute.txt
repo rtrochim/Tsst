@@ -2,9 +2,7 @@ C:\Users\Radek\Desktop\Visual\TSST\ManagementCenter\obj\Debug\ManagementCenter.c
 C:\Users\Radek\Desktop\Visual\TSST\ManagementCenter\bin\Debug\ManagementCenter.exe.config
 C:\Users\Radek\Desktop\Visual\TSST\ManagementCenter\bin\Debug\ManagementCenter.exe
 C:\Users\Radek\Desktop\Visual\TSST\ManagementCenter\bin\Debug\ManagementCenter.pdb
-C:\Users\Radek\Desktop\Visual\TSST\ManagementCenter\bin\Debug\Agent.dll
 C:\Users\Radek\Desktop\Visual\TSST\ManagementCenter\bin\Debug\Manager.dll
-C:\Users\Radek\Desktop\Visual\TSST\ManagementCenter\bin\Debug\Agent.pdb
 C:\Users\Radek\Desktop\Visual\TSST\ManagementCenter\bin\Debug\Manager.pdb
 C:\Users\Radek\Desktop\Visual\TSST\ManagementCenter\obj\Debug\ManagementCenter.exe
 C:\Users\Radek\Desktop\Visual\TSST\ManagementCenter\obj\Debug\ManagementCenter.pdb
@@ -20,3 +18,5 @@ C:\Users\Lenovo\source\repos\Tsst\ManagementCenter\obj\Debug\ManagementCenter.cs
 C:\Users\Lenovo\source\repos\Tsst\ManagementCenter\obj\Debug\ManagementCenter.csproj.CopyComplete
 C:\Users\Lenovo\source\repos\Tsst\ManagementCenter\obj\Debug\ManagementCenter.exe
 C:\Users\Lenovo\source\repos\Tsst\ManagementCenter\obj\Debug\ManagementCenter.pdb
+C:\Users\Radek\Desktop\Visual\TSST\ManagementCenter\bin\Debug\Dijkstra.dll
+C:\Users\Radek\Desktop\Visual\TSST\ManagementCenter\bin\Debug\Dijkstra.pdb

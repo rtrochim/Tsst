@@ -50,13 +50,25 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Agent\Agent.csproj">
-      <Project>{5778981b-f193-4ba3-9dc4-e3e1dd4f85cb}</Project>
-      <Name>Agent</Name>
+    <ProjectReference Include="..\Dijkstra\Dijkstra.csproj">
+      <Project>{fa40426d-8199-4c37-be78-704b49b76508}</Project>
+      <Name>Dijkstra</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ListenerSocket\ListenerSocket.csproj">
+      <Project>{224bd71b-a967-4e64-9b41-d7303f46628d}</Project>
+      <Name>ListenerSocket</Name>
     </ProjectReference>
     <ProjectReference Include="..\Manager\Manager.csproj">
       <Project>{9b63ab69-e9e1-4dfe-8e33-4535225a589b}</Project>
       <Name>Manager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Packet\Packet.csproj">
+      <Project>{e6983333-0adf-4186-a652-00428ed13532}</Project>
+      <Name>Packet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SenderSocket\SenderSocket.csproj">
+      <Project>{7efda123-613f-4a72-a23b-1330bda77543}</Project>
+      <Name>SenderSocket</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
