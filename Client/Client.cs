@@ -2,6 +2,7 @@
 using System.Threading;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Net.Http;
 
 namespace TSST
 {
@@ -16,9 +17,11 @@ namespace TSST
 
         public ListenerSocket listener;
         public SenderSocket sender;
+        public HttpClient client;
         public int listenerPort;
         public int targetPort;
         public int adjacentNodePort;
+        public int adjacentNodeId;
         public Packet packet;
 
         static void Main(string[] args)
@@ -29,10 +32,7 @@ namespace TSST
             Console.SetWindowSize(45, 17);
             Thread.Sleep(600);
             string[] lines = File.ReadAllLines(args[0]);
-            Client c = new Client();
-            c.listenerPort = Int32.Parse(lines[0]);
-            c.targetPort = Int32.Parse(lines[1]);
-            c.adjacentNodePort = Int32.Parse(lines[2]);
+            Client c = new Client(Int32.Parse(lines[0]), Int32.Parse(lines[1]), Int32.Parse(lines[2]), Int32.Parse(lines[3]));
             Thread.Sleep(200);
             ThreadStart senderThread= new ThreadStart(() => c.sendPacket());
             Thread childThread = new Thread(senderThread);
@@ -40,7 +40,7 @@ namespace TSST
             Thread.Yield();
         }
 
-        public Client()
+        public Client(int listenerPort, int targetPort, int adjacentNodePort, int adjacentNodeId)
         {
             Console.WriteLine(@"
    _____ _      _____ ______ _   _ _______ 
@@ -49,12 +49,17 @@ namespace TSST
  | |    | |      | | |  __| | . ` |  | |   
  | |____| |____ _| |_| |____| |\  |  | |
   \_____|______|_____|______|_| \_|  |_|");
+            this.listenerPort = listenerPort;
+            this.targetPort = targetPort;
+            this.adjacentNodePort = adjacentNodePort;
+            this.adjacentNodeId = adjacentNodeId;
             ThreadStart childref = new ThreadStart(listeningThread);
             Thread childThread = new Thread(childref);
             childThread.Start();
             
     
             this.sender = new SenderSocket();
+            this.client = new HttpClient();
         }
 
         public void listeningThread()
@@ -63,19 +68,25 @@ namespace TSST
             this.listener = new ListenerSocket(listenerPort, handlePacket);
         }
 
-        public void sendPacket()
+        public async void sendPacket()
         {
-                while (true)
-                {
-                    Thread.Yield();
-                    Console.Write("Data to send: ");
-                    string message = Console.ReadLine();
-                    Console.Write("Port to send data to: ");
-                    string portNumber = Console.ReadLine();
-                    Packet packetToSend = new Packet(message, Int32.Parse(portNumber), this.adjacentNodePort);
-                    
-                    //this.sender.sendMessage(packetToSend.serialize(), this.targetPort);
-                }
+            while (true)
+            {
+                Console.Write("Data to send: ");
+                string message = Console.ReadLine();
+                Console.Write("Port to send data to: ");
+                string portNumber = Console.ReadLine();
+                Console.Write("Required bandwidth: ");
+                string bandwidth = Console.ReadLine();
+                HttpResponseMessage response = await this.client.GetAsync(string.Format("http://localhost:13000?adjacentNodeId={0}&bandwidth={1}&targetPort={2}", adjacentNodeId, bandwidth, portNumber));
+                response.EnsureSuccessStatusCode();
+                string responseBody = await response.Content.ReadAsStringAsync();
+                Console.WriteLine("Response: {0}", responseBody);
+                Thread.Yield();
+                //Packet packetToSend = new Packet(message, Int32.Parse(portNumber), this.adjacentNodePort);
+
+                //this.sender.sendMessage(packetToSend.serialize(), this.targetPort);
+            }
 
         }
 

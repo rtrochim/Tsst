@@ -20,3 +20,11 @@ C:\Users\Lenovo\source\repos\Tsst\ManagementCenter\obj\Debug\ManagementCenter.ex
 C:\Users\Lenovo\source\repos\Tsst\ManagementCenter\obj\Debug\ManagementCenter.pdb
 C:\Users\Radek\Desktop\Visual\TSST\ManagementCenter\bin\Debug\Dijkstra.dll
 C:\Users\Radek\Desktop\Visual\TSST\ManagementCenter\bin\Debug\Dijkstra.pdb
+C:\Users\Radek\Desktop\Visual\TSST\ManagementCenter\bin\Debug\ListenerSocket.dll
+C:\Users\Radek\Desktop\Visual\TSST\ManagementCenter\bin\Debug\Packet.dll
+C:\Users\Radek\Desktop\Visual\TSST\ManagementCenter\bin\Debug\SenderSocket.dll
+C:\Users\Radek\Desktop\Visual\TSST\ManagementCenter\bin\Debug\ListenerSocket.pdb
+C:\Users\Radek\Desktop\Visual\TSST\ManagementCenter\bin\Debug\Packet.pdb
+C:\Users\Radek\Desktop\Visual\TSST\ManagementCenter\bin\Debug\SenderSocket.pdb
+C:\Users\Radek\Desktop\Visual\TSST\ManagementCenter\bin\Debug\WebServer.dll
+C:\Users\Radek\Desktop\Visual\TSST\ManagementCenter\bin\Debug\WebServer.pdb

@@ -20,6 +20,7 @@ namespace TSST
         public static int listenerPort;
         public static int targetPort;
         public SwitchingField sf;
+        public Dictionary<int, bool[]> slots;
         public Packet packet;
         public List<int> entryPorts;
 
@@ -45,6 +46,12 @@ namespace TSST
                     Console.Write($"{item}, ");
                 }
                 Console.Write(Environment.NewLine);
+                n.slots = new Dictionary<int, bool[]>();
+                foreach (int item in n.entryPorts)
+                {
+                    n.slots.Add(item, new bool[20]);
+                    Array.ForEach(n.slots[item], i => i = false);
+                }
             }
             catch(Exception e)
             {
@@ -72,6 +79,7 @@ namespace TSST
             Thread childThread = new Thread(childref);
             childThread.Start();
             this.sender = new SenderSocket();
+
             sf = new SwitchingField();
         }
 
@@ -88,7 +96,7 @@ namespace TSST
                 packet = p;
                 try
                 {
-                    sf.commutatePacket(ref packet, port);
+                    sf.commutatePacket(ref packet, port, ref slots);
                     this.sender.sendMessage(packet.serialize(), targetPort);
                 }
                 catch (Exception e)
@@ -102,10 +110,10 @@ namespace TSST
         }
         public static void watchTable(string path, Node n)
         {   
-            List<string> linesToCompare = new List<string>(n.sf.setRoutingTable(path));
+            List<string> linesToCompare = new List<string>(n.sf.setSwitchingTable(path));
             while (true)
             {
-                List<string> linesInIteration = new List<string>(n.sf.setRoutingTable(path));
+                List<string> linesInIteration = new List<string>(n.sf.setSwitchingTable(path));
                 if (!((linesToCompare.Count == linesInIteration.Count) && !linesToCompare.Except(linesInIteration).Any()))
                 {
                     linesToCompare = new List<string>(linesInIteration);

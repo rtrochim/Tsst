@@ -1,0 +1,4 @@
+C:\Users\Radek\Desktop\Visual\TSST\WebServer\bin\Debug\WebServer.dll
+C:\Users\Radek\Desktop\Visual\TSST\WebServer\bin\Debug\WebServer.pdb
+C:\Users\Radek\Desktop\Visual\TSST\WebServer\obj\Debug\WebServer.dll
+C:\Users\Radek\Desktop\Visual\TSST\WebServer\obj\Debug\WebServer.pdb

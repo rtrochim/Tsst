@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Packet", "Packet\Packet.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dijkstra", "Dijkstra\Dijkstra.csproj", "{FA40426D-8199-4C37-BE78-704B49B76508}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebServer", "WebServer\WebServer.csproj", "{BC228EB2-87D4-4ED4-8381-0FE4F2B7F7C8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,10 @@ Global
 		{FA40426D-8199-4C37-BE78-704B49B76508}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA40426D-8199-4C37-BE78-704B49B76508}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA40426D-8199-4C37-BE78-704B49B76508}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC228EB2-87D4-4ED4-8381-0FE4F2B7F7C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC228EB2-87D4-4ED4-8381-0FE4F2B7F7C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC228EB2-87D4-4ED4-8381-0FE4F2B7F7C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC228EB2-87D4-4ED4-8381-0FE4F2B7F7C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -89,6 +95,7 @@ Global
 		{2411D790-950A-4CEB-B128-00C2F9BDE8DB} = {D92D8ECD-F0FD-46A6-BB8A-688F95DEA89F}
 		{E6983333-0ADF-4186-A652-00428ED13532} = {D92D8ECD-F0FD-46A6-BB8A-688F95DEA89F}
 		{FA40426D-8199-4C37-BE78-704B49B76508} = {D92D8ECD-F0FD-46A6-BB8A-688F95DEA89F}
+		{BC228EB2-87D4-4ED4-8381-0FE4F2B7F7C8} = {D92D8ECD-F0FD-46A6-BB8A-688F95DEA89F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5CF5A60E-EB1C-4935-87D9-12B5C9472499}

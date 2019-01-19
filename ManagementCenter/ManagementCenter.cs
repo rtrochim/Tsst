@@ -1,16 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Net;
+using System.Collections.Generic;
 
 namespace TSST
 {
     class ManagementCenter
     {
         public int listeningPort = 13000;
+        public List<Tuple<int, int>> adjacentNodes;
         public ListenerSocket listener;
+        public WebServer server;
         [DllImport("kernel32.dll", SetLastError = true)]
         static extern IntPtr GetConsoleWindow();
 
@@ -29,9 +33,9 @@ namespace TSST
             ManagementCenter mc = new ManagementCenter();
             lock (mc)
             {
+                mc.server.Run();
                 while (true)
                 {
-                    mc.computePath(7, 4);
                     Console.ReadKey();
                 }
             }
@@ -46,18 +50,49 @@ namespace TSST
  | |\/| | / /\ \ | . ` | / /\ \| | |_ |  __| |  _  / 
  | |  | |/ ____ \| |\  |/ ____ \ |__| | |____| | \ \ 
  |_|  |_/_/    \_\_| \_/_/    \_\_____|______|_|  \_\");
-
+            this.adjacentNodes = new List<Tuple<int, int>>();
+            this.adjacentNodes.Add(new Tuple<int, int>(0, 2));
+            this.adjacentNodes.Add(new Tuple<int, int>(1, 4));
+            this.adjacentNodes.Add(new Tuple<int, int>(3, 6));
+            this.adjacentNodes.Add(new Tuple<int, int>(2, 0));
             this.readTopology();
             this.dijkstra = new Dijkstra();
+            string[] prefixes;
+            prefixes = new string[1];
+            prefixes[0] = "http://localhost:13000/";
+            this.server = new WebServer(prefixes, sendResponse);
+        }
 
-            ThreadStart childref = new ThreadStart(listeningThread);
-            Thread childThread = new Thread(childref);
-            childThread.Start();
+        public string sendResponse(HttpListenerRequest request)
+        {
+            try
+            {
+                NameValueCollection query = new NameValueCollection();
+                query = request.QueryString;
+                string sourceNodeId = query.Get("adjacentNodeId");
+                Console.WriteLine("Source node ID: {0}", sourceNodeId);
+                string targetPort = query.Get("targetPort");
+                Console.WriteLine("Target port: {0}", targetPort);
+                int targetNodeId = this.adjacentNodes.Find(item => (item.Item1 == Int32.Parse(targetPort) - 11000)).Item2;
+                Console.WriteLine("Target node ID: {0}", targetNodeId);
+                List<int> path = dijkstra.algorithm(topology, Int32.Parse(sourceNodeId), targetNodeId);
+                Console.WriteLine("Path:");
+                foreach (int node in path)
+                {   
+                    Console.WriteLine(node.ToString());
+                }
+                return "Path set";
+
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+            return "Unable to set path";
         }
 
         public void readTopology()
         {
-
             string[] lines = File.ReadAllLines("..\\..\\..\\TEST\\configs\\Topology.conf");
             this.topology = new int[lines.Length, lines.Length];
             int i = 0;
@@ -82,9 +117,10 @@ namespace TSST
             this.listener = new ListenerSocket(listeningPort, handlePacket);
         }
 
-        public void handlePacket(Packet p, int port)
+        public int handlePacket(Packet p, int port)
         {
             Console.WriteLine();
+            return 0;
         }
 
         public void computePath(int source, int destination)
