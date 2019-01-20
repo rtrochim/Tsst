@@ -3,6 +3,7 @@ using System.Threading;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Net.Http;
+using System.Net;
 
 namespace TSST
 {
@@ -20,7 +21,7 @@ namespace TSST
         public HttpClient client;
         public int listenerPort;
         public int targetPort;
-        public int adjacentNodePort;
+        public int myInterface;
         public int adjacentNodeId;
         public Packet packet;
 
@@ -40,7 +41,7 @@ namespace TSST
             Thread.Yield();
         }
 
-        public Client(int listenerPort, int targetPort, int adjacentNodePort, int adjacentNodeId)
+        public Client(int listenerPort, int targetPort, int myInterface, int adjacentNodeId)
         {
             Console.WriteLine(@"
    _____ _      _____ ______ _   _ _______ 
@@ -51,7 +52,7 @@ namespace TSST
   \_____|______|_____|______|_| \_|  |_|");
             this.listenerPort = listenerPort;
             this.targetPort = targetPort;
-            this.adjacentNodePort = adjacentNodePort;
+            this.myInterface = myInterface;
             this.adjacentNodeId = adjacentNodeId;
             ThreadStart childref = new ThreadStart(listeningThread);
             Thread childThread = new Thread(childref);
@@ -83,9 +84,9 @@ namespace TSST
                 string responseBody = await response.Content.ReadAsStringAsync();
                 Console.WriteLine("Response: {0}", responseBody);
                 Thread.Yield();
-                //Packet packetToSend = new Packet(message, Int32.Parse(portNumber), this.adjacentNodePort);
+                Packet packetToSend = new Packet(message, Int32.Parse(portNumber), this.myInterface);
 
-                //this.sender.sendMessage(packetToSend.serialize(), this.targetPort);
+                this.sender.sendMessage(packetToSend.serialize(), this.targetPort);
             }
 
         }

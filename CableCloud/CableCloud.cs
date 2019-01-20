@@ -20,11 +20,10 @@ namespace TSST
         ListenerSocket listener;
         public static List<int> portNums;
         public static int currentPortNum;
-        //Connections between our Network Elements
-        public List<Tuple<int,int>> connections;
+        public List<Tuple<int,int>> nodesConnections;
         public Packet packet;
         public Dictionary<int, List<int>> interfacesMap;
-
+        public List<Tuple<int, int>> connectionsMap;
 
         static void Main(string[] args)
         {
@@ -42,8 +41,9 @@ namespace TSST
                 }
             }
             CableCloud cc = new CableCloud();
-            cc.readConnections();
+            cc.readTopology();
             cc.readInterfaces(args[0]);
+            cc.readConnections(@"..\..\..\TEST\configs\NetworkConnections.conf");
             while (true)
             {
                 Console.WriteLine(@"
@@ -90,13 +90,14 @@ What to do:");
                 childThread.Start();
                 Thread.Sleep(100);
             }
-            this.connections = new List<Tuple<int,int>>();
+            this.nodesConnections = new List<Tuple<int,int>>();
+            this.connectionsMap = new List<Tuple<int, int>>();
         }
         public void listeningThread()
         {
             this.listener = new ListenerSocket(currentPortNum, handlePacket);
         }
-        public void readConnections()
+        public void readTopology()
         {
             int[,] topology;
             string[] lines = File.ReadAllLines("..\\..\\..\\TEST\\configs\\Topology.conf");
@@ -119,29 +120,40 @@ What to do:");
                 {
                     if (topology[m, n] != 0)
                     {
-                        if (!this.connections.Contains(new Tuple<int,int>(m, n)) && !this.connections.Contains(new Tuple<int,int>(n, m)))
+                        if (!this.nodesConnections.Contains(new Tuple<int,int>(m, n)) && !this.nodesConnections.Contains(new Tuple<int,int>(n, m)))
                         {
-                            this.connections.Add(new Tuple<int, int>(m, n));
+                            this.nodesConnections.Add(new Tuple<int, int>(m, n));
                         }
                     }
                 }
-            }
-            foreach(Tuple<int,int> item in this.connections)
-            {
-                Console.WriteLine("Item1: " + item.Item1.ToString() +"Item2: "+ item.Item2.ToString());
             }
         }
 
 
         public int handlePacket(Packet p, int port)
         {
+            // TODO Map edges between nodes, so that Cable Cloud knows that 107 is connected to 170
             lock (this)
             {
                 Thread.Sleep(400);
                 packet = p;
-                Console.WriteLine("Got packet with data: {0} \n on port {1}, \n+ sending to port {2}", packet.data, port, packet.nextHop);
+                Console.WriteLine("Got packet with data: {0} \n on port {1} nextHop is {2}", packet.data, port, packet.nextHop);
                 int targetPort = 0;
                 int targetNode = -1;
+                foreach ( Tuple<int,int> entry in connectionsMap)
+                {
+                    if(entry.Item1 == packet.nextHop)
+                    {
+                        packet.nextHop = entry.Item2;
+                        break;
+                    }
+                    else if(entry.Item2 == packet.nextHop)
+                    {
+                        packet.nextHop = entry.Item1;
+                        break;
+                    }
+                }
+                Console.WriteLine("NextHop is now {0}",packet.nextHop);
                 foreach (KeyValuePair<int, List<int>> item in interfacesMap)
                 {
                     if(item.Value.Contains(packet.nextHop))
@@ -150,7 +162,7 @@ What to do:");
                     }
                 }
                 Console.WriteLine("TargetPort:" + targetPort.ToString());
-                if (this.connections.Exists(item => ((item.Item1 == targetPort - 11100 && item.Item2 == port - 12100)||(item.Item2 == targetPort - 11100 && item.Item1 == port - 12100))) || targetPort == packet.targetPort || Enumerable.Range(12000, 12003).Contains(port))
+                if (this.nodesConnections.Exists(item => ((item.Item1 == targetPort - 11100 && item.Item2 == port - 12100)||(item.Item2 == targetPort - 11100 && item.Item1 == port - 12100))) || targetPort == packet.targetPort || Enumerable.Range(12000, 12003).Contains(port))
                 {
                     sender.sendMessage(packet.serialize(), targetPort);
                     Thread.Yield();
@@ -178,6 +190,15 @@ What to do:");
         {
             
         }
+        public void readConnections(string path)
+        {
+            string[] lines = File.ReadAllLines(path);
+            foreach( string line in lines)
+            {
+                string[] temp = line.Split(' ');
+                this.connectionsMap.Add(new Tuple<int, int>(int.Parse(temp[0]), int.Parse(temp[1])));
+            }
+        }
         public void readInterfaces(string path)
         {
             this.interfacesMap = new Dictionary<int, List<int>>();
@@ -196,15 +217,6 @@ What to do:");
                     i++;
                 }
                 this.interfacesMap.Add(Int32.Parse(values[1]), interfaces);
-            }
-            foreach(KeyValuePair<int, List<int>> item in this.interfacesMap)
-            {
-                Console.WriteLine("Interface"+item.Key+":");
-                foreach(int dupa in item.Value)
-                {
-                    Console.Write(dupa.ToString()+",");
-                }
-                Console.Write(Environment.NewLine);
             }
         }
     }

@@ -12,16 +12,15 @@ namespace TSST
     [Serializable()]
     public class Packet
     {
-        public List<string> labels;
         public string data; 
         public int targetPort;
         public int nextHop;
+        public int nextInterface;
         [NonSerialized()] public static int packetID = 0;
 
         public Packet(string data, int targetPort, int nextHop)
         {
             packetID++;
-            this.labels = new List<string>();
             this.data = data;
             this.targetPort = targetPort;
             this.nextHop = nextHop;

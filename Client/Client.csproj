@@ -62,6 +62,10 @@
       <Project>{7efda123-613f-4a72-a23b-1330bda77543}</Project>
       <Name>SenderSocket</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WebServer\WebServer.csproj">
+      <Project>{bc228eb2-87d4-4ed4-8381-0fe4f2b7f7c8}</Project>
+      <Name>WebServer</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

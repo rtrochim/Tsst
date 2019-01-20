@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Net.Http;
+using System.Net;
 
 namespace TSST
 {
@@ -23,6 +25,8 @@ namespace TSST
         public Dictionary<int, bool[]> slots;
         public Packet packet;
         public List<int> entryPorts;
+        public WebServer server;
+        public string configurationPath;
 
         static void Main(string[] args)
         {
@@ -58,35 +62,65 @@ namespace TSST
                 Console.WriteLine(e.ToString());
             }
 
-            lock (n)
-            {
-                ThreadStart childref = new ThreadStart(() => watchTable(args[0], n));
-                Thread watchThread = new Thread(childref);
-                watchThread.Start();
-            }
+            //lock (n)
+            //{
+            //    ThreadStart childref = new ThreadStart(() => watchTable(args[0], n));
+            //    Thread watchThread = new Thread(childref);
+            //    watchThread.Start();
+            //}
         }
-        public Node(string pathToLabelTable)
+        public Node(string configurationPath)
         {
-            entryPorts = new List<int>();
-            Console.WriteLine(@"
+            lock (this)
+            {
+                entryPorts = new List<int>();
+                Console.WriteLine(@"
   _   _  ____  _____  ______ 
  | \ | |/ __ \|  __ \|  ____|
  |  \| | |  | | |  | | |__   
  | . ` | |  | | |  | |  __|  
  | |\  | |__| | |__| | |____ 
  |_| \_|\____/|_____/|______|");
-            ThreadStart childref = new ThreadStart(listeningThread);
-            Thread childThread = new Thread(childref);
-            childThread.Start();
-            this.sender = new SenderSocket();
+                ThreadStart childref = new ThreadStart(listeningThread);
+                Thread childThread = new Thread(childref);
+                childThread.Start();
+                this.sender = new SenderSocket();
 
-            sf = new SwitchingField();
+                sf = new SwitchingField();
+
+                this.configurationPath = configurationPath;
+                string[] prefixes;
+                prefixes = new string[1];
+                prefixes[0] = $"http://localhost:{listenerPort - 1000}/refresh/";
+                Console.WriteLine($"Waiting for refresh requests at localhost:{listenerPort - 1000}");
+                this.server = new WebServer(prefixes, handleResponse);
+                this.server.Run();
+            }
         }
 
         public void listeningThread()
         {
             Console.WriteLine("I will send data to port {0}", targetPort);
             this.listener = new ListenerSocket(listenerPort, handlePacket);
+        }
+
+        public string handleResponse(HttpListenerRequest request)
+        {
+            lock (this)
+            {
+                try
+                {
+                    Console.WriteLine("Updating table");
+                    this.sf.setSwitchingTable(this.configurationPath);
+                    Console.WriteLine("Table updated!");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Unexpected error: {e.ToString()}");
+                }
+            }
+
+            return "OK";
         }
 
         public int handlePacket(Packet p, int port)
@@ -106,20 +140,6 @@ namespace TSST
                     Thread.Yield();
                 }
                 return 0;
-            }
-        }
-        public static void watchTable(string path, Node n)
-        {   
-            List<string> linesToCompare = new List<string>(n.sf.setSwitchingTable(path));
-            while (true)
-            {
-                List<string> linesInIteration = new List<string>(n.sf.setSwitchingTable(path));
-                if (!((linesToCompare.Count == linesInIteration.Count) && !linesToCompare.Except(linesInIteration).Any()))
-                {
-                    linesToCompare = new List<string>(linesInIteration);
-                    Console.WriteLine("Table updated!");
-                }
-                Thread.Sleep(1000);
             }
         }
     }

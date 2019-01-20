@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Net;
 using System.Collections.Generic;
+using System.Net.Http;
 
 namespace TSST
 {
@@ -22,6 +23,7 @@ namespace TSST
         internal static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
 
         int[,] topology;
+        public HttpClient client; 
         Dijkstra dijkstra;
 
         static void Main(string[] args)
@@ -61,6 +63,7 @@ namespace TSST
             prefixes = new string[1];
             prefixes[0] = "http://localhost:13000/";
             this.server = new WebServer(prefixes, sendResponse);
+            this.client = new HttpClient();
         }
 
         public string sendResponse(HttpListenerRequest request)
@@ -76,11 +79,12 @@ namespace TSST
                 int targetNodeId = this.adjacentNodes.Find(item => (item.Item1 == Int32.Parse(targetPort) - 11000)).Item2;
                 Console.WriteLine("Target node ID: {0}", targetNodeId);
                 List<int> path = dijkstra.algorithm(topology, Int32.Parse(sourceNodeId), targetNodeId);
-                Console.WriteLine("Path:");
                 foreach (int node in path)
                 {   
-                    Console.WriteLine(node.ToString());
+                    Console.WriteLine("Node{0}:", node.ToString());
+                    string entry = "";
                 }
+                notifyNodes(path);
                 return "Path set";
 
             }
@@ -89,6 +93,21 @@ namespace TSST
                 Console.WriteLine(e.ToString());
             }
             return "Unable to set path";
+        }
+
+        public async void notifyNodes(List<int> nodes)
+        {   
+            try {
+                foreach (int node in nodes)
+                {
+                    Console.WriteLine($"Node: {node}, on port: {node + 10100}");
+                    await this.client.GetAsync(string.Format("http://localhost:{0}/refresh/", node + 10100));
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Exception" + e.ToString());
+            }
         }
 
         public void readTopology()

@@ -70,6 +70,10 @@
       <Project>{c27dd9a7-bef0-4c9e-ae7e-76ba922875fa}</Project>
       <Name>SwitchingField</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WebServer\WebServer.csproj">
+      <Project>{bc228eb2-87d4-4ed4-8381-0fe4f2b7f7c8}</Project>
+      <Name>WebServer</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

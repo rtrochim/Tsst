@@ -32,3 +32,5 @@ C:\Users\Lenovo\source\repos\Tsst\Node\obj\Debug\Node.exe
 C:\Users\Lenovo\source\repos\Tsst\Node\obj\Debug\Node.pdb
 C:\Users\Radek\Desktop\Visual\TSST\Node\bin\Debug\Packet.dll
 C:\Users\Radek\Desktop\Visual\TSST\Node\bin\Debug\Packet.pdb
+C:\Users\Radek\Desktop\Visual\TSST\Node\bin\Debug\WebServer.dll
+C:\Users\Radek\Desktop\Visual\TSST\Node\bin\Debug\WebServer.pdb
