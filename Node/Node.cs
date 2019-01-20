@@ -6,6 +6,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Net.Http;
 using System.Net;
+using System.Collections.Specialized;
 
 namespace TSST
 {
@@ -110,6 +111,12 @@ namespace TSST
             {
                 try
                 {
+                    NameValueCollection query = new NameValueCollection();
+                    query = request.QueryString;
+                    string entry = query.Get("entry");
+                    string[] items = entry.Split('-');
+                    this.sf.addEntry(items);
+                    Console.WriteLine("Entry to update: {0}", entry);
                     Console.WriteLine("Updating table");
                     this.sf.setSwitchingTable(this.configurationPath);
                     Console.WriteLine("Table updated!");

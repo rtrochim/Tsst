@@ -1,5 +1,5 @@
 start cmd.exe /c .\CableCloud.exe.lnk ..\..\..\TEST\configs\CableCloud1.conf -7 545
-start cmd.exe /c .\ManagementCenter.exe.lnk 1105 545
+start cmd.exe /c .\ManagementCenter.exe.lnk ..\..\..\TEST\configs\ManagementCenter.conf 1105 545
 start cmd.exe /c .\Client.exe.lnk ..\..\..\TEST\configs\Client0.conf -7 250
 start cmd.exe /c .\Client.exe.lnk ..\..\..\TEST\configs\Client1.conf 1205 250
 start cmd.exe /c .\Node.exe.lnk ..\..\..\TEST\configs\Node6.conf 365 540

@@ -10,12 +10,11 @@ namespace TSST
         List<Tuple<string, string, string, string>> switchingTable;
         public SwitchingField()
         {
-
+            this.switchingTable = new List<Tuple<string, string, string, string>>();
         }
 
         public void setSwitchingTable(string pathToSwitchingTable)
         {
-            this.switchingTable = new List<Tuple<string, string, string, string>>();
             List<string> lines = new List<string>(File.ReadAllLines(pathToSwitchingTable));
             lines.RemoveRange(0, 3);
             foreach (string item in lines)
@@ -42,6 +41,21 @@ namespace TSST
                 Thread.Yield();
             }
 
+        }
+
+        public void addEntry(string[] entry)
+        {
+            this.switchingTable.Add(new Tuple<string,string,string,string>(entry[0], entry[1], entry[2], entry[3]));
+            this.switchingTable.ForEach(item => { Console.WriteLine("Item: {0} {1} {2} {3}", item.Item1, item.Item2, item.Item3, item.Item4); });
+        }
+
+        public void printSwitchingTable()
+        {
+            Console.WriteLine("Switching table");
+            foreach(Tuple<string,string,string,string> item in this.switchingTable)
+            {
+                Console.WriteLine("{0} {1} {2} {3}", item.Item1, item.Item2, item.Item3, item.Item4);
+            }
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Threading;
 using System.Net;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 
 namespace TSST
 {
@@ -25,16 +26,18 @@ namespace TSST
         int[,] topology;
         public HttpClient client; 
         Dijkstra dijkstra;
-
+        public Dictionary<string, List<int>> nodesInterfaces;
+        public Dictionary<string,Tuple<int, int>> connectionsMap;
         static void Main(string[] args)
         {
             IntPtr ptr = GetConsoleWindow();
-            MoveWindow(ptr, Int32.Parse(args[0]), Int32.Parse(args[1]), 1000, 400, true);
+            MoveWindow(ptr, Int32.Parse(args[1]), Int32.Parse(args[2]), 1000, 400, true);
 
             Console.SetWindowSize(75, 18);
             ManagementCenter mc = new ManagementCenter();
             lock (mc)
             {
+                mc.readNodesInterfaces(args[0]);
                 mc.server.Run();
                 while (true)
                 {
@@ -58,12 +61,15 @@ namespace TSST
             this.adjacentNodes.Add(new Tuple<int, int>(3, 6));
             this.adjacentNodes.Add(new Tuple<int, int>(2, 0));
             this.readTopology();
+            this.connectionsMap = new Dictionary<string, Tuple<int, int>>();
+            this.nodesInterfaces = new Dictionary<string, List<int>>();
             this.dijkstra = new Dijkstra();
             string[] prefixes;
             prefixes = new string[1];
             prefixes[0] = "http://localhost:13000/";
             this.server = new WebServer(prefixes, sendResponse);
             this.client = new HttpClient();
+            this.readConnections(@"..\..\..\TEST\configs\ConnectionPairs.conf");
         }
 
         public string sendResponse(HttpListenerRequest request)
@@ -79,12 +85,50 @@ namespace TSST
                 int targetNodeId = this.adjacentNodes.Find(item => (item.Item1 == Int32.Parse(targetPort) - 11000)).Item2;
                 Console.WriteLine("Target node ID: {0}", targetNodeId);
                 List<int> path = dijkstra.algorithm(topology, Int32.Parse(sourceNodeId), targetNodeId);
-                foreach (int node in path)
-                {   
-                    Console.WriteLine("Node{0}:", node.ToString());
-                    string entry = "";
+                Console.Write("PATH: ");
+                foreach (int edge in path)
+                {
+                    Console.Write(edge.ToString() + ",");
                 }
-                notifyNodes(path);
+                Console.Write(Environment.NewLine);
+                for (int i = 0; i < path.Count; i++)
+                {
+                    if (i == 0)
+                    {
+                        Dictionary<string, Tuple<int,int>> result = this.connectionsMap.Where(item => (item.Key.Contains('C') && item.Key.Contains(string.Format("N{0}", path[i])))).ToDictionary(it => it.Key, it => it.Value);
+                        Dictionary<string, Tuple<int,int>> nextResult = this.connectionsMap.Where(item => (item.Key.Contains(string.Format("N{0}", path[i+1])) && item.Key.Contains(string.Format("N{0}", path[i])))).ToDictionary(it => it.Key, it => it.Value);
+                        int first = result.Keys.First()[0] == 'C' ? result[result.Keys.First()].Item2 : result[result.Keys.First()].Item1;
+                        Console.WriteLine("First: {0}", first);
+                        //Console.WriteLine("result.Keys.First: {0}", result.Keys.First());
+                        //Console.WriteLine("result.Item1: {0}", result[result.Keys.First()].Item1);
+                        //Console.WriteLine("result.Item2: {0}", result[result.Keys.First()].Item2);
+                        //Console.WriteLine("nextResult.Keys.First: {0}", nextResult.Keys.First());
+                        //Console.WriteLine("nextResult.Item1: {0}", nextResult[nextResult.Keys.First()].Item1);
+                        //Console.WriteLine("nextResult.Item1: {0}", nextResult[nextResult.Keys.First()].Item2);
+
+                        int second = nextResult.Keys.First()[1].ToString() == (path[i]).ToString() ? nextResult[nextResult.Keys.First()].Item1 : nextResult[nextResult.Keys.First()].Item2;
+                        Console.WriteLine("Second: {0}", second);
+                        string entry = String.Format("{0}-{1}-{2}-{3}", "0:4", first, "0:4", second);
+                        notifyNodes(path[i], entry);
+                    } else if (i == path.Count - 1)
+                    {
+                        Dictionary<string, Tuple<int, int>> result = this.connectionsMap.Where(item => (item.Key.Contains('C') && item.Key.Contains(string.Format("N{0}", path[i])))).ToDictionary(it => it.Key, it => it.Value);
+                        Dictionary<string, Tuple<int, int>> previousResult = this.connectionsMap.Where(item => (item.Key.Contains(string.Format("N{0}", path[i - 1])) && item.Key.Contains(string.Format("N{0}", path[i])))).ToDictionary(it => it.Key, it => it.Value);
+                        int first = previousResult.Keys.First()[1].ToString() == path[i].ToString() ? previousResult[previousResult.Keys.First()].Item1 : previousResult[previousResult.Keys.First()].Item2;
+                        int second = result.Keys.First()[0] == 'C' ? result[result.Keys.First()].Item2 : result[result.Keys.First()].Item1;
+                        string entry = String.Format("{0}-{1}-{2}-{3}", "0:4", first, "0:4", second);
+                        notifyNodes(path[i], entry);
+                    } else
+                    {
+                        Dictionary<string, Tuple<int, int>> previousResult = this.connectionsMap.Where(item => (item.Key.Contains(string.Format("N{0}", path[i - 1])) && item.Key.Contains(string.Format("N{0}", path[i])))).ToDictionary(it => it.Key, it => it.Value);
+                        Dictionary<string, Tuple<int, int>> nextResult = this.connectionsMap.Where(item => (item.Key.Contains(string.Format("N{0}", path[i + 1])) && item.Key.Contains(string.Format("N{0}", path[i])))).ToDictionary(it => it.Key, it => it.Value);
+                        Dictionary<string, Tuple<int, int>> result = this.connectionsMap.Where(item => (item.Key.Contains(string.Format("N{0}", path[i])) && item.Key.Contains(string.Format("N{0}", path[i+1])))).ToDictionary(it => it.Key, it => it.Value);
+                        int first = previousResult.Keys.First()[1].ToString() == path[i].ToString() ? previousResult[previousResult.Keys.First()].Item1 : previousResult[previousResult.Keys.First()].Item2;
+                        int second = nextResult.Keys.First()[1].ToString() == path[i].ToString() ? nextResult[nextResult.Keys.First()].Item1 : nextResult[nextResult.Keys.First()].Item2;
+                        string entry = String.Format("{0}-{1}-{2}-{3}", "0:4", first, "0:4", second);
+                        notifyNodes(path[i], entry);
+                    }
+                }
                 return "Path set";
 
             }
@@ -95,14 +139,11 @@ namespace TSST
             return "Unable to set path";
         }
 
-        public async void notifyNodes(List<int> nodes)
+        public async void notifyNodes(int node, string entry)
         {   
             try {
-                foreach (int node in nodes)
-                {
-                    Console.WriteLine($"Node: {node}, on port: {node + 10100}");
-                    await this.client.GetAsync(string.Format("http://localhost:{0}/refresh/", node + 10100));
-                }
+                Console.WriteLine($"Node: {node}, on port: {node + 10100}");
+                await this.client.GetAsync(string.Format("http://localhost:{0}/refresh?entry={1}", node + 10100, entry));
             }
             catch (Exception e)
             {
@@ -160,6 +201,39 @@ namespace TSST
         public void addEntry(string nodeID)
         {
         
+        }
+
+        public void readNodesInterfaces(string path)
+        {
+            string[] buffer = File.ReadAllLines(path);
+            foreach (string line in buffer)
+            {
+                List<string> temp = line.Split(' ').ToList();
+                string key = temp[0];
+                temp.RemoveAt(0);
+                List<int> temp2 = temp.ConvertAll(item => Int32.Parse(item));
+                this.nodesInterfaces.Add(key, temp2);
+            }
+            //foreach(KeyValuePair<string,List<int>> dupa in this.nodesInterfaces)
+            //{
+            //    Console.WriteLine("Key {0} Value:", dupa.Key);
+            //    dupa.Value.ForEach(item => Console.Write(item+", "));
+            //    Console.Write(Environment.NewLine);
+            //}
+        }
+
+        public void readConnections(string path)
+        {
+            string[] lines = File.ReadAllLines(path);
+            foreach (string line in lines)
+            {
+                string[] temp = line.Split(' ');
+                this.connectionsMap.Add(temp[0], new Tuple<int,int>(int.Parse(temp[1]),int.Parse(temp[2])));
+            }
+            //foreach (KeyValuePair<string, Tuple<int, int>> item in this.connectionsMap)
+            //{
+            //    Console.WriteLine("Key {0}, Value: {1} {2}", item.Key, item.Value.Item1.ToString(), item.Value.Item2.ToString());
+            //}
         }
 
         public void deleteConnection(int first, int second)
