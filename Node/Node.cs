@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Net.Http;
 using System.Net;
 using System.Collections.Specialized;
+using System.Threading.Tasks;
 
 namespace TSST
 {
@@ -17,6 +18,8 @@ namespace TSST
 
         [DllImport("user32.dll", SetLastError = true)]
         internal static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
+
+        int MAX_SLOTS = 10;
 
         public ListenerSocket listener;
         public SenderSocket sender;
@@ -54,7 +57,7 @@ namespace TSST
                 n.slots = new Dictionary<int, bool[]>();
                 foreach (int item in n.entryPorts)
                 {
-                    n.slots.Add(item, new bool[20]);
+                    n.slots.Add(item, new bool[n.MAX_SLOTS]);
                     Array.ForEach(n.slots[item], i => i = false);
                 }
             }
@@ -91,8 +94,9 @@ namespace TSST
 
                 this.configurationPath = configurationPath;
                 string[] prefixes;
-                prefixes = new string[1];
+                prefixes = new string[2];
                 prefixes[0] = $"http://localhost:{listenerPort - 1000}/refresh/";
+                prefixes[1] = $"http://localhost:{listenerPort - 1000}/getSlotsStatus/";
                 Console.WriteLine($"Waiting for refresh requests at localhost:{listenerPort - 1000}");
                 this.server = new WebServer(prefixes, handleResponse);
                 this.server.Run();
@@ -109,25 +113,41 @@ namespace TSST
         {
             lock (this)
             {
-                try
+                if (request.RawUrl.Contains("refresh"))
                 {
-                    NameValueCollection query = new NameValueCollection();
-                    query = request.QueryString;
-                    string entry = query.Get("entry");
-                    string[] items = entry.Split('-');
-                    this.sf.addEntry(items);
-                    Console.WriteLine("Entry to update: {0}", entry);
-                    Console.WriteLine("Updating table");
-                    this.sf.setSwitchingTable(this.configurationPath);
-                    Console.WriteLine("Table updated!");
-                }
-                catch (Exception e)
+                    try
+                    {
+                        NameValueCollection query = new NameValueCollection();
+                        query = request.QueryString;
+                        string entry = query.Get("entry");
+                        string[] items = entry.Split('-');
+                        this.sf.addEntry(items, ref this.slots);
+                        Console.WriteLine("Entry to update: {0}", entry);
+                        Console.WriteLine("Updating table");
+                        this.sf.setSwitchingTable(this.configurationPath);
+                        Console.WriteLine("Table updated!");
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine($"Unexpected error: {e.ToString()}");
+                    }
+                } else if (request.RawUrl.Contains("getSlotsStatus"))
                 {
-                    Console.WriteLine($"Unexpected error: {e.ToString()}");
+                    string response = "";
+                    foreach (int key in this.slots.Keys)
+                    {
+                        response += key.ToString() + ":";
+                        foreach(bool slot in this.slots[key])
+                        {
+                            response += slot ? "1" : "0";
+                        }
+                        response += " ";
+                    }
+                    return response;
                 }
-            }
 
-            return "OK";
+                return "NODE: OK";
+            }
         }
 
         public int handlePacket(Packet p, int port)

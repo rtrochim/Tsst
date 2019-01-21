@@ -132,7 +132,6 @@ What to do:");
 
         public int handlePacket(Packet p, int port)
         {
-            // TODO Map edges between nodes, so that Cable Cloud knows that 107 is connected to 170
             lock (this)
             {
                 Thread.Sleep(400);

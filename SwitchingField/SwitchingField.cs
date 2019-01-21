@@ -28,7 +28,8 @@ namespace TSST
         {
             Console.WriteLine("Got Packet on: " + packet.nextHop.ToString() + " TargetPort: " + packet.targetPort + " EntryPort: " + entryPort);
             int nextHop = packet.nextHop;
-            Tuple<string, string, string, string> entry = switchingTable.Find(item => Int32.Parse(item.Item2) == nextHop);
+            string usedSlots = packet.usedSlots;
+            Tuple<string, string, string, string> entry = switchingTable.Find(item => Int32.Parse(item.Item2) == nextHop && usedSlots == item.Item1);
             if (entry != null)
             {
                 packet.nextHop = int.Parse(entry.Item4);
@@ -37,15 +38,23 @@ namespace TSST
             }
             else
             {
-                throw new Exception("Cannot commutate");
                 Thread.Yield();
+                throw new Exception("Cannot commutate");
             }
 
         }
 
-        public void addEntry(string[] entry)
+        public void addEntry(string[] entry, ref Dictionary<int, bool[]> slots)
         {
             this.switchingTable.Add(new Tuple<string,string,string,string>(entry[0], entry[1], entry[2], entry[3]));
+            string[] temp = entry[0].Split(':');
+            for(int i = int.Parse(temp[0]); i <= int.Parse(temp[1]); i++)
+            {
+                slots[int.Parse(entry[1])][i] = true;
+                slots[int.Parse(entry[3])][i] = true;
+            }
+
+
             this.switchingTable.ForEach(item => { Console.WriteLine("Item: {0} {1} {2} {3}", item.Item1, item.Item2, item.Item3, item.Item4); });
         }
 

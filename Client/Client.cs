@@ -83,8 +83,10 @@ namespace TSST
                 response.EnsureSuccessStatusCode();
                 string responseBody = await response.Content.ReadAsStringAsync();
                 Console.WriteLine("Response: {0}", responseBody);
+                Console.WriteLine("Which slots to use?\nManager reserved these-"+ responseBody);
+                string slots = Console.ReadLine();
                 Thread.Yield();
-                Packet packetToSend = new Packet(message, Int32.Parse(portNumber), this.myInterface);
+                Packet packetToSend = new Packet(message, Int32.Parse(portNumber), this.myInterface, slots);
 
                 this.sender.sendMessage(packetToSend.serialize(), this.targetPort);
             }

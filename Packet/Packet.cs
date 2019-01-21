@@ -16,14 +16,16 @@ namespace TSST
         public int targetPort;
         public int nextHop;
         public int nextInterface;
+        public string usedSlots;
         [NonSerialized()] public static int packetID = 0;
 
-        public Packet(string data, int targetPort, int nextHop)
+        public Packet(string data, int targetPort, int nextHop, string slots)
         {
             packetID++;
             this.data = data;
             this.targetPort = targetPort;
             this.nextHop = nextHop;
+            this.usedSlots = slots;
         }
 
         public byte[] serialize()
