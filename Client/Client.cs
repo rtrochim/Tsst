@@ -4,7 +4,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Net.Http;
 using System.Net;
-
+using System.Collections.Generic;
 namespace TSST
 {
 
@@ -24,7 +24,7 @@ namespace TSST
         public int myInterface;
         public int adjacentNodeId;
         public Packet packet;
-
+        public List<Tuple<string, string, string>> existingConnections;
         static void Main(string[] args)
         {
             IntPtr ptr = GetConsoleWindow();
@@ -54,6 +54,7 @@ namespace TSST
             this.targetPort = targetPort;
             this.myInterface = myInterface;
             this.adjacentNodeId = adjacentNodeId;
+            this.existingConnections = new List<Tuple<string, string, string>>();
             ThreadStart childref = new ThreadStart(listeningThread);
             Thread childThread = new Thread(childref);
             childThread.Start();
@@ -73,22 +74,47 @@ namespace TSST
         {
             while (true)
             {
-                Console.Write("Data to send: ");
-                string message = Console.ReadLine();
-                Console.Write("Port to send data to: ");
-                string portNumber = Console.ReadLine();
-                Console.Write("Required bandwidth: ");
-                string bandwidth = Console.ReadLine();
-                HttpResponseMessage response = await this.client.GetAsync(string.Format("http://localhost:13000?adjacentNodeId={0}&bandwidth={1}&targetPort={2}", adjacentNodeId, bandwidth, portNumber));
-                response.EnsureSuccessStatusCode();
-                string responseBody = await response.Content.ReadAsStringAsync();
-                Console.WriteLine("Response: {0}", responseBody);
-                Console.WriteLine("Which slots to use?\nManager reserved these-"+ responseBody);
-                string slots = Console.ReadLine();
-                Thread.Yield();
-                Packet packetToSend = new Packet(message, Int32.Parse(portNumber), this.myInterface, slots);
+                Console.WriteLine("What you wanna do?");
+                Console.WriteLine("[0] Use existing connection");
+                Console.WriteLine("[1] Establish new connection");
+                string option = Console.ReadLine();
+                if (option == "0")
+                {
+                    foreach(Tuple<string, string,string> item in existingConnections)
+                    {
+                        Console.WriteLine("{0},{1},{2}", item.Item1, item.Item2, item.Item3);
+                    }
+                    Console.Write("Data to send: ");
+                    string message = Console.ReadLine();
+                    Console.Write("Port to send data to: ");
+                    string portNumber = Console.ReadLine();
+                    Console.WriteLine("Which slots to use?");
+                    string slots = Console.ReadLine();
+                    Packet packetToSend = new Packet(message, Int32.Parse(portNumber), this.myInterface, slots);
+                    this.sender.sendMessage(packetToSend.serialize(), this.targetPort);
+                    Thread.Yield();
 
-                this.sender.sendMessage(packetToSend.serialize(), this.targetPort);
+                }
+                if (option == "1")
+                {
+                    Console.Write("Data to send: ");
+                    string message = Console.ReadLine();
+                    Console.Write("Port to send data to: ");
+                    string portNumber = Console.ReadLine();
+                    Console.Write("Required bandwidth in Gbps: ");
+                    string bandwidth = Console.ReadLine();
+                    HttpResponseMessage response = await this.client.GetAsync(string.Format("http://localhost:13000?adjacentNodeId={0}&bandwidth={1}&targetPort={2}", adjacentNodeId, bandwidth, portNumber));
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine("Response: {0}", responseBody);
+                    Console.WriteLine("Which slots to use?\nManager reserved these-" + responseBody);
+                    string slots = Console.ReadLine();
+                    Thread.Yield();
+                    Packet packetToSend = new Packet(message, Int32.Parse(portNumber), this.myInterface, slots);
+                    this.sender.sendMessage(packetToSend.serialize(), this.targetPort);
+                    this.existingConnections.Add(new Tuple<string, string, string>(portNumber.ToString(), slots, bandwidth));
+                }
+
             }
 
         }

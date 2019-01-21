@@ -132,13 +132,14 @@ namespace TSST
                     {
                         Console.WriteLine($"Unexpected error: {e.ToString()}");
                     }
-                } else if (request.RawUrl.Contains("getSlotsStatus"))
+                }
+                else if (request.RawUrl.Contains("getSlotsStatus"))
                 {
                     string response = "";
                     foreach (int key in this.slots.Keys)
                     {
                         response += key.ToString() + ":";
-                        foreach(bool slot in this.slots[key])
+                        foreach (bool slot in this.slots[key])
                         {
                             response += slot ? "1" : "0";
                         }
@@ -146,8 +147,20 @@ namespace TSST
                     }
                     return response;
                 }
+                else if (request.RawUrl.Contains("getSwitchingTable"))
+                {
+                    List<Tuple<string, string, string, string>> switchingTable = new List<Tuple<string, string, string, string>>(this.sf.getSwitchingTable());
+                    string response = "";
+                    foreach (Tuple<string,string,string,string> tuple in switchingTable)
+                    {
+                        response += $"{tuple.Item1} {tuple.Item2} {tuple.Item3} {tuple.Item4};";
+                    }
+                    response.Remove(response.Length - 1);
+                    return response;
+                }
 
-                return "NODE: OK";
+
+                    return "NODE: OK";
             }
         }
 

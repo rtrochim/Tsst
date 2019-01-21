@@ -67,5 +67,10 @@ namespace TSST
                 Console.WriteLine("{0} {1} {2} {3}", item.Item1, item.Item2, item.Item3, item.Item4);
             }
         }
+
+        public List<Tuple<string,string,string,string>> getSwitchingTable()
+        {
+            return this.switchingTable;
+        }
     }
 }

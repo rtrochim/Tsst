@@ -41,10 +41,33 @@ namespace TSST
             {
                 mc.readNodesInterfaces(args[0]);
                 mc.server.Run();
-                while (true)
-                {
-                    Console.ReadKey();
-                }
+                    while (true)
+                    {
+                        Console.WriteLine(@"
+[L] List all entries from Node
+[A] Add entry to Node
+[R] Remove entry from Node
+What to do:");
+                        string option = Console.ReadLine();
+                        switch (option)
+                        {
+                            case "L":
+                                Console.WriteLine("Which node: ");
+                                mc.listEntries(Console.ReadLine());
+                                break;
+                            case "A":
+                                Console.WriteLine("Which node: ");
+                                mc.addEntry(Console.ReadLine());
+                                break;
+                            case "R":
+                                Console.WriteLine("Which node: ");
+                                mc.deleteEntry(Console.ReadLine());
+                                break;
+                            default:
+                                Console.WriteLine("Invalid option!");
+                                break;
+                        }
+                    }
             }
 
         }
@@ -102,9 +125,9 @@ namespace TSST
                     Tuple<List<int>, int> dijkstraResult = dijkstra.calculate(this.topology, Int32.Parse(sourceNodeId), targetNodeId);
                     List<int> path = new List<int>(dijkstraResult.Item1);
                     int pathLength = dijkstraResult.Item2;
-                    Console.WriteLine("Required Bandwidth {0}", requiredBandwidth);
+                    //Console.WriteLine("Required Bandwidth {0}", requiredBandwidth);
                     requiredSlots = calculateSlots(int.Parse(requiredBandwidth), pathLength);
-                    Console.WriteLine("calculateSlots Result: {0}",requiredSlots);
+                    //Console.WriteLine("calculateSlots Result: {0}",requiredSlots);
                     lastSlot = firstSlot + requiredSlots - 1;
                     validPath = path;
                     // Print out calculated path
@@ -221,8 +244,8 @@ namespace TSST
             }
             for(int j=0; j < validPath.Count; j++)
             {
-                Console.WriteLine("ValidPath[j]: {0}", validPath[j].ToString());
-                Console.WriteLine("Entries[j]: {0}", entries[j]);
+                //Console.WriteLine("ValidPath[j]: {0}", validPath[j].ToString());
+                //Console.WriteLine("Entries[j]: {0}", entries[j]);
                 notifyNodes(validPath[j], entries[j]);
             }
             this.topology = backupTopology;
@@ -312,9 +335,16 @@ namespace TSST
             this.dijkstra.calculate(this.topology, source, destination);
         }
 
-        public void listEntries(string nodeID)
+        public async void listEntries(string nodeID)
         {
-            
+            HttpResponseMessage res = await this.client.GetAsync($"http://localhost:{int.Parse(nodeID) + 10100}/getSwitchingTable/");
+            HttpContent content = res.Content;
+            string response = await content.ReadAsStringAsync();
+            string[] lines = response.Split(';');
+            foreach (string line in lines)
+            {
+                Console.WriteLine("{0}", line);
+            }
         }
 
         public void deleteEntry(string nodeID)
