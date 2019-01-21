@@ -19,7 +19,7 @@ namespace TSST
         [DllImport("user32.dll", SetLastError = true)]
         internal static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
 
-        int MAX_SLOTS = 10;
+        int MAX_SLOTS = 100;
 
         public ListenerSocket listener;
         public SenderSocket sender;
@@ -94,9 +94,10 @@ namespace TSST
 
                 this.configurationPath = configurationPath;
                 string[] prefixes;
-                prefixes = new string[2];
+                prefixes = new string[3];
                 prefixes[0] = $"http://localhost:{listenerPort - 1000}/refresh/";
                 prefixes[1] = $"http://localhost:{listenerPort - 1000}/getSlotsStatus/";
+                prefixes[2] = $"http://localhost:{listenerPort - 1000}/getSwitchingTable/";
                 Console.WriteLine($"Waiting for refresh requests at localhost:{listenerPort - 1000}");
                 this.server = new WebServer(prefixes, handleResponse);
                 this.server.Run();

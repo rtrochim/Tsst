@@ -77,7 +77,7 @@ namespace TSST
             return path.ToList();
         }
 
-        public void calculate(int[,] graph, int sourceNode, int destinationNode)
+        public Tuple<List<int>, int> calculate(int[,] graph, int sourceNode, int destinationNode)
         {
             Console.Write(
                 "Shortest path [{0} -> {1}]: ",
@@ -85,6 +85,7 @@ namespace TSST
                 destinationNode);
 
             var path = algorithm(graph, sourceNode, destinationNode);
+            int pathLength = 0;
 
             if (path == null)
             {
@@ -92,7 +93,6 @@ namespace TSST
             }
             else
             {
-                int pathLength = 0;
                 for (int i = 0; i < path.Count - 1; i++)
                 {
                     pathLength += graph[path[i], path[i + 1]];
@@ -101,6 +101,8 @@ namespace TSST
                 var formattedPath = string.Join("->", path);
                 Console.WriteLine("{0} (length {1})", formattedPath, pathLength);
             }
+
+            return new Tuple<List<int>,int>(path, pathLength*10);
         }
 
     }

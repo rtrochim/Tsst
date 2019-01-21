@@ -48,6 +48,7 @@ namespace TSST
         {
             this.switchingTable.Add(new Tuple<string,string,string,string>(entry[0], entry[1], entry[2], entry[3]));
             string[] temp = entry[0].Split(':');
+            Console.WriteLine("Temp[0]: {0}", temp[0]);
             for(int i = int.Parse(temp[0]); i <= int.Parse(temp[1]); i++)
             {
                 slots[int.Parse(entry[1])][i] = true;

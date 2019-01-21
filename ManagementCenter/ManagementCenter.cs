@@ -86,10 +86,9 @@ namespace TSST
             //Console.WriteLine("Target port: {0}", targetPort);
             string requiredBandwidth = query.Get("bandwidth");
             int targetNodeId = this.adjacentNodes.Find(item => (item.Item1 == Int32.Parse(targetPort) - 11000)).Item2;
-            int requiredSlots = int.Parse(Math.Ceiling(((float.Parse(requiredBandwidth)*2)/12.5)).ToString());
-            Console.WriteLine("Required Slots: {0}", requiredSlots.ToString());
+            int requiredSlots;
             int firstSlot = 0;
-            int lastSlot = firstSlot + requiredSlots - 1;
+            int lastSlot;
             List<int> validPath = new List<int>();
             List<string> entries = new List<string>();
             int[,] backupTopology = this.topology;
@@ -100,7 +99,13 @@ namespace TSST
                     this.interfacesSlotsMap.Clear();
                     invalidPath = false;
                     //Console.WriteLine("Target node ID: {0}", targetNodeId);
-                    List<int> path = dijkstra.algorithm(this.topology, Int32.Parse(sourceNodeId), targetNodeId);
+                    Tuple<List<int>, int> dijkstraResult = dijkstra.calculate(this.topology, Int32.Parse(sourceNodeId), targetNodeId);
+                    List<int> path = new List<int>(dijkstraResult.Item1);
+                    int pathLength = dijkstraResult.Item2;
+                    Console.WriteLine("Required Bandwidth {0}", requiredBandwidth);
+                    requiredSlots = calculateSlots(int.Parse(requiredBandwidth), pathLength);
+                    Console.WriteLine("calculateSlots Result: {0}",requiredSlots);
+                    lastSlot = firstSlot + requiredSlots - 1;
                     validPath = path;
                     // Print out calculated path
                     Console.Write("PATH: ");
@@ -182,7 +187,7 @@ namespace TSST
                         {
                             break;
                         }
-                        for (int i = firstSlot; i < lastSlot; i++)
+                        for (int i = firstSlot; i <= lastSlot; i++)
                         {
                             // TODO: What if we run out of slots? Delete this path from topology
                             if (interfacesSlotsMap[item][i])
@@ -216,10 +221,38 @@ namespace TSST
             }
             for(int j=0; j < validPath.Count; j++)
             {
+                Console.WriteLine("ValidPath[j]: {0}", validPath[j].ToString());
+                Console.WriteLine("Entries[j]: {0}", entries[j]);
                 notifyNodes(validPath[j], entries[j]);
             }
             this.topology = backupTopology;
             return $"{firstSlot}:{lastSlot}";
+        }
+
+        public int calculateSlots(int requiredBandwidth, int pathLength)
+        {
+            int numberOfModulationSymbols;
+            if (pathLength > 0 && pathLength < 100)
+            {
+                Console.WriteLine("16QAM has been chosen");
+                numberOfModulationSymbols = 4;
+            }
+            else if (pathLength >= 100 && pathLength < 200)
+            {
+                Console.WriteLine("8QAM has been chosen");
+                numberOfModulationSymbols = 3;
+            }
+               
+            else
+            {
+                Console.WriteLine("QPSK has been chosen");
+                numberOfModulationSymbols = 2;
+            }
+               
+
+            int requiredSlots = int.Parse(Math.Ceiling(((float.Parse(requiredBandwidth.ToString()) * 2) / 12.5)).ToString());
+            int result = int.Parse(Math.Ceiling(float.Parse((requiredSlots / numberOfModulationSymbols).ToString())).ToString());
+            return result >= 1 ? result : 1;
         }
 
         public async void notifyNodes(int node, string entry)
