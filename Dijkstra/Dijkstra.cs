@@ -99,7 +99,7 @@ namespace TSST
                 }
 
                 var formattedPath = string.Join("->", path);
-                Console.WriteLine("{0} (length {1})", formattedPath, pathLength);
+                Console.WriteLine("{0} (length {1})", formattedPath, (pathLength*10).ToString() + " km");
             }
 
             return new Tuple<List<int>,int>(path, pathLength*10);

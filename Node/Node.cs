@@ -94,11 +94,11 @@ namespace TSST
 
                 this.configurationPath = configurationPath;
                 string[] prefixes;
-                prefixes = new string[3];
+                prefixes = new string[4];
                 prefixes[0] = $"http://localhost:{listenerPort - 1000}/refresh/";
                 prefixes[1] = $"http://localhost:{listenerPort - 1000}/getSlotsStatus/";
                 prefixes[2] = $"http://localhost:{listenerPort - 1000}/getSwitchingTable/";
-                Console.WriteLine($"Waiting for refresh requests at localhost:{listenerPort - 1000}");
+                prefixes[3] = $"http://localhost:{listenerPort - 1000}/removeEntry/";
                 this.server = new WebServer(prefixes, handleResponse);
                 this.server.Run();
             }
@@ -145,6 +145,7 @@ namespace TSST
                         }
                         response += " ";
                     }
+                    Thread.Yield();
                     return response;
                 }
                 else if (request.RawUrl.Contains("getSwitchingTable"))
@@ -156,11 +157,28 @@ namespace TSST
                         response += $"{tuple.Item1} {tuple.Item2} {tuple.Item3} {tuple.Item4};";
                     }
                     response.Remove(response.Length - 1);
+                    Thread.Yield();
                     return response;
                 }
-
-
-                    return "NODE: OK";
+                else if (request.RawUrl.Contains("removeEntry"))
+                {
+                    NameValueCollection query = new NameValueCollection();
+                    query = request.QueryString;
+                    string entry = query.Get("entry");
+                    Console.WriteLine("Removing entry: {0}", entry);
+                    string[] items = entry.Split('-');
+                    Tuple<string, string, string, string> item = new Tuple<string, string, string, string>(items[0], items[1], items[2], items[3]);
+                    string[] slots = items[0].Split(':');
+                    for (int i = int.Parse(slots[0]) ; i <= int.Parse(slots[1]); i++)
+                    {
+                        this.slots[int.Parse(items[1])][i] = false;
+                        this.slots[int.Parse(items[3])][i] = false;
+                    }
+                    this.sf.removeEntry(item);
+                    Thread.Yield();
+                }
+                Thread.Yield();
+                return "NODE: OK";
             }
         }
 

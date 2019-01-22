@@ -106,8 +106,7 @@ namespace TSST
                     HttpResponseMessage response = await this.client.GetAsync(string.Format("http://localhost:13000?adjacentNodeId={0}&bandwidth={1}&targetPort={2}", adjacentNodeId, bandwidth, portNumber));
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine("Response: {0}", responseBody);
-                    Console.WriteLine("Which slots to use?\nManager reserved these-" + responseBody);
+                    Console.WriteLine("Which slots to use?(start:end)\nManager reserved these-" + responseBody);
                     string slots = Console.ReadLine();
                     Thread.Yield();
                     Packet packetToSend = new Packet(message, Int32.Parse(portNumber), this.myInterface, slots);

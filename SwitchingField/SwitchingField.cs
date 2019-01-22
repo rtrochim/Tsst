@@ -57,6 +57,7 @@ namespace TSST
 
 
             this.switchingTable.ForEach(item => { Console.WriteLine("Item: {0} {1} {2} {3}", item.Item1, item.Item2, item.Item3, item.Item4); });
+            Thread.Yield();
         }
 
         public void printSwitchingTable()
@@ -66,6 +67,12 @@ namespace TSST
             {
                 Console.WriteLine("{0} {1} {2} {3}", item.Item1, item.Item2, item.Item3, item.Item4);
             }
+        }
+
+        public void removeEntry(Tuple<string,string,string,string> entry)
+        {
+            this.switchingTable.Remove(entry);
+            Thread.Yield();
         }
 
         public List<Tuple<string,string,string,string>> getSwitchingTable()

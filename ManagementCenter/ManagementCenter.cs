@@ -30,6 +30,7 @@ namespace TSST
         public Dictionary<string, List<int>> nodesInterfaces;
         public Dictionary<string,Tuple<int, int>> connectionsMap;
         public Dictionary<int, bool[]> interfacesSlotsMap = new Dictionary<int, bool[]>();
+        public List<Tuple<List<string>, List<int>, int>> establishedConnections;
         static void Main(string[] args)
         {
             IntPtr ptr = GetConsoleWindow();
@@ -45,8 +46,8 @@ namespace TSST
                     {
                         Console.WriteLine(@"
 [L] List all entries from Node
-[A] Add entry to Node
-[R] Remove entry from Node
+[E] List established connections in network
+[R] Remove connection between Nodes
 What to do:");
                         string option = Console.ReadLine();
                         switch (option)
@@ -55,13 +56,14 @@ What to do:");
                                 Console.WriteLine("Which node: ");
                                 mc.listEntries(Console.ReadLine());
                                 break;
-                            case "A":
-                                Console.WriteLine("Which node: ");
-                                mc.addEntry(Console.ReadLine());
+                            case "E":
+                                mc.listEstablishedConnections();
                                 break;
                             case "R":
-                                Console.WriteLine("Which node: ");
-                                mc.deleteEntry(Console.ReadLine());
+                                mc.listEstablishedConnections();
+                                Console.WriteLine("Which nodes to cut? (first:second)");
+                                string choice = Console.ReadLine();
+                                mc.deleteConnection(int.Parse(choice.Split(':').First()), int.Parse(choice.Split(':').Last()));
                                 break;
                             default:
                                 Console.WriteLine("Invalid option!");
@@ -88,6 +90,7 @@ What to do:");
             this.readTopology();
             this.connectionsMap = new Dictionary<string, Tuple<int, int>>();
             this.nodesInterfaces = new Dictionary<string, List<int>>();
+            this.establishedConnections = new List<Tuple<List<string>, List<int>, int>>();
             this.dijkstra = new Dijkstra();
             string[] prefixes;
             prefixes = new string[1];
@@ -104,9 +107,7 @@ What to do:");
             NameValueCollection query = new NameValueCollection();
             query = request.QueryString;
             string sourceNodeId = query.Get("adjacentNodeId");
-            //Console.WriteLine("Source node ID: {0}", sourceNodeId);
             string targetPort = query.Get("targetPort");
-            //Console.WriteLine("Target port: {0}", targetPort);
             string requiredBandwidth = query.Get("bandwidth");
             int targetNodeId = this.adjacentNodes.Find(item => (item.Item1 == Int32.Parse(targetPort) - 11000)).Item2;
             int requiredSlots;
@@ -121,22 +122,13 @@ What to do:");
                 {
                     this.interfacesSlotsMap.Clear();
                     invalidPath = false;
-                    //Console.WriteLine("Target node ID: {0}", targetNodeId);
                     Tuple<List<int>, int> dijkstraResult = dijkstra.calculate(this.topology, Int32.Parse(sourceNodeId), targetNodeId);
                     List<int> path = new List<int>(dijkstraResult.Item1);
                     int pathLength = dijkstraResult.Item2;
-                    //Console.WriteLine("Required Bandwidth {0}", requiredBandwidth);
                     requiredSlots = calculateSlots(int.Parse(requiredBandwidth), pathLength);
-                    //Console.WriteLine("calculateSlots Result: {0}",requiredSlots);
                     lastSlot = firstSlot + requiredSlots - 1;
                     validPath = path;
                     // Print out calculated path
-                    Console.Write("PATH: ");
-                    foreach (int edge in path)
-                    {
-                        Console.Write(edge.ToString() + ",");
-                    }
-                    Console.Write(Environment.NewLine);
                     // Ask each node in path about its slot usage and prepare a Dict out of it
                     foreach (int node in path)
                     {
@@ -156,16 +148,6 @@ What to do:");
                             this.interfacesSlotsMap.Add(int.Parse(temp2[0]), temp3.ToArray());
 
                         }
-                    }
-                    // Print out the prepared Dict
-                    foreach (KeyValuePair<int, bool[]> item in this.interfacesSlotsMap)
-                    {
-                        //Console.Write("Key {0}:", item.Key);
-                        foreach (bool slot in item.Value)
-                        {
-                            //Console.Write(slot ? "1" : "0");
-                        }
-                        //Console.Write(Environment.NewLine);
                     }
 
                     List<int> interfacesOnPath = new List<int>();
@@ -223,7 +205,7 @@ What to do:");
                                 if (lastSlot > interfacesSlotsMap[item].Length - 1)
                                 {
                                     KeyValuePair<string, Tuple<int, int>> result = this.connectionsMap.First(it => (it.Value.Item1 == item || it.Value.Item2 == item));
-                                    Console.WriteLine("Deleting connection {0} - {1}", result.Key[1].ToString(), result.Key[3].ToString());
+                                    Console.WriteLine("Removing connection {0} - {1} from pool.", result.Key[1].ToString(), result.Key[3].ToString());
                                     deleteConnection(int.Parse(result.Key[1].ToString()), int.Parse(result.Key[3].ToString()));
                                     firstSlot = 0;
                                     lastSlot = firstSlot + requiredSlots - 1;
@@ -244,10 +226,9 @@ What to do:");
             }
             for(int j=0; j < validPath.Count; j++)
             {
-                //Console.WriteLine("ValidPath[j]: {0}", validPath[j].ToString());
-                //Console.WriteLine("Entries[j]: {0}", entries[j]);
                 notifyNodes(validPath[j], entries[j]);
             }
+            this.establishedConnections.Add(new Tuple<List<string>, List<int>, int>(entries.ToList(), validPath.ToList(), int.Parse(requiredBandwidth)));
             this.topology = backupTopology;
             return $"{firstSlot}:{lastSlot}";
         }
@@ -281,7 +262,6 @@ What to do:");
         public async void notifyNodes(int node, string entry)
         {   
             try {
-                //Console.WriteLine($"Node: {node}, on port: {node + 10100}");
                 await this.client.GetAsync(string.Format("http://localhost:{0}/refresh?entry={1}", node + 10100, entry));
             }
             catch (Exception e)
@@ -309,25 +289,11 @@ What to do:");
                 foreach (string l in line.Split(','))
                 {
                     this.topology[i, j] = Int32.Parse(l);
-                    //Console.Write(l+',');
                     j++;
                 }
-                //Console.Write(Environment.NewLine);
                 j = 0;
                 i++;
             }
-        }
-
-        public void listeningThread()
-        {
-            Console.WriteLine("I am listening on port {0}", this.listeningPort);
-            this.listener = new ListenerSocket(listeningPort, handlePacket);
-        }
-
-        public int handlePacket(Packet p, int port)
-        {
-            Console.WriteLine();
-            return 0;
         }
 
         public void computePath(int source, int destination)
@@ -368,12 +334,6 @@ What to do:");
                 List<int> temp2 = temp.ConvertAll(item => Int32.Parse(item));
                 this.nodesInterfaces.Add(key, temp2);
             }
-            //foreach(KeyValuePair<string,List<int>> dupa in this.nodesInterfaces)
-            //{
-            //    Console.WriteLine("Key {0} Value:", dupa.Key);
-            //    dupa.Value.ForEach(item => Console.Write(item+", "));
-            //    Console.Write(Environment.NewLine);
-            //}
         }
 
         public void readConnections(string path)
@@ -384,47 +344,65 @@ What to do:");
                 string[] temp = line.Split(' ');
                 this.connectionsMap.Add(temp[0], new Tuple<int,int>(int.Parse(temp[1]),int.Parse(temp[2])));
             }
-            //foreach (KeyValuePair<string, Tuple<int, int>> item in this.connectionsMap)
-            //{
-            //    Console.WriteLine("Key {0}, Value: {1} {2}", item.Key, item.Value.Item1.ToString(), item.Value.Item2.ToString());
-            //}
         }
 
-        public void deleteConnection(int first, int second)
+        public async void deleteConnection(int first, int second)
         {
-            this.topology[first, second] = 0;
-            this.topology[second, first] = 0;
-            string line = "";
-            string[] lines = new string[this.topology.GetLength(0)];
-
-            for(int i=0; i < this.topology.GetLength(0); i++)
+            try
             {
-                for (int j = 0; j < this.topology.GetLength(0); j++)
+                this.topology[first, second] = 0;
+                this.topology[second, first] = 0;
+                List<Tuple<int, int, int>> droppedConnections = new List<Tuple<int, int, int>>();
+                List<Tuple<List<string>, List<int>, int>> dumpedConnections = new List<Tuple<List<string>, List<int>, int>>();
+
+                foreach (Tuple<List<string>, List<int>, int> item in this.establishedConnections)
                 {
-                    line += this.topology[i, j];
-                    if (j < this.topology.GetLength(0) - 1)
+                    List<int> items = new List<int>(item.Item2.Where(it => (it == first) || (it == second)).ToList());
+                    if (items.Count == 2)
                     {
-                        line += ',';
+                        droppedConnections.Add(new Tuple<int, int, int>(item.Item2[0], item.Item2[item.Item2.Count - 1], item.Item3));
+                        for (int i = 0; i < item.Item2.Count; i++)
+                        {
+                            await this.client.GetAsync(string.Format("http://localhost:{0}/removeEntry?entry={1}", item.Item2[i] + 10100, item.Item1[i]));
+                        }
+                        dumpedConnections.Add(item);
                     }
                 }
-                lines[i] = line;
-                line = "";
-            }
 
-            string text = "";
-            int k = 0;
-
-            foreach(string row in lines)
-            {
-                text += row;
-                if (k < lines.Length - 1)
+                foreach(Tuple<List<string>, List<int>, int> item in dumpedConnections)
                 {
-                    text += Environment.NewLine;
+                    this.establishedConnections.Remove(item);
+                }
+
+                foreach (Tuple<int, int, int> item in droppedConnections)
+                {
+                    Tuple<List<int>, int> result = this.dijkstra.calculate(this.topology, item.Item1, item.Item2);
+                    int adjacentNodeId = item.Item1;
+                    int lastNodeId = item.Item2;
+                    KeyValuePair<string, Tuple<int, int>> pair = this.connectionsMap.First(it => ((it.Key[0] == 'C' && it.Key[3].ToString() == lastNodeId.ToString()) || (it.Key[2] == 'C' && it.Key[1].ToString() == lastNodeId.ToString())));
+                    string clientId = pair.Key[0] == 'C' ? pair.Key[1].ToString() : pair.Key[3].ToString();
+                    await this.client.GetAsync(string.Format("http://localhost:13000?adjacentNodeId={0}&bandwidth={1}&targetPort={2}", adjacentNodeId, item.Item3, int.Parse(clientId) + 11000));
+                }
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+        }
+
+
+        public void listEstablishedConnections()
+        {
+            int k = 0;
+            foreach(Tuple<List<string>, List<int>, int> item1 in this.establishedConnections)
+            {
+                Console.WriteLine("ID{0} ", k);
+                for(int i = 0; i< item1.Item2.Count; i++)
+                {
+                    Console.WriteLine("{0}   {1}    {2}", item1.Item1[i],item1.Item2[i], item1.Item3);
                 }
                 k++;
             }
-
-            //File.WriteAllText("..\\..\\..\\TEST\\configs\\Topology.conf", text);
         }
     }
 }
