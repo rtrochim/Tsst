@@ -65,13 +65,6 @@ namespace TSST
             {
                 Console.WriteLine(e.ToString());
             }
-
-            //lock (n)
-            //{
-            //    ThreadStart childref = new ThreadStart(() => watchTable(args[0], n));
-            //    Thread watchThread = new Thread(childref);
-            //    watchThread.Start();
-            //}
         }
         public Node(string configurationPath)
         {
@@ -123,10 +116,9 @@ namespace TSST
                         string entry = query.Get("entry");
                         string[] items = entry.Split('-');
                         this.sf.addEntry(items, ref this.slots);
-                        Console.WriteLine("Entry to update: {0}", entry);
-                        Console.WriteLine("Updating table");
+                        Console.WriteLine("Updating with entry: {0}", entry);
                         this.sf.setSwitchingTable(this.configurationPath);
-                        Console.WriteLine("Table updated!");
+                        Thread.Yield();
                     }
                     catch (Exception e)
                     {

@@ -46,28 +46,7 @@ namespace TSST
             cc.readConnections(@"..\..\..\TEST\configs\NetworkConnections.conf");
             while (true)
             {
-                Console.WriteLine(@"
-[L] List connections
-[T] Terminate connection
-[A] Add connection
-What to do:");
                 string option = Console.ReadLine();
-                switch (option)
-                {
-                    case "L":
-                        cc.listConnections();
-                        break;
-                    case "A":
-                        cc.addConnection();
-                        break;
-                    case "T":
-                        cc.terminateConnection();
-                        break;
-                    default:
-                        Console.WriteLine("Invalid option!");
-                        break;
-
-                }
             }
         }
 
