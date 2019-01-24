@@ -47,13 +47,19 @@ namespace TSST
             Node n = new Node(args[0]);
             try
             {
-                Console.Write("My interfaces: ");
+                Console.Write("My SNPs: ");
                 foreach (string item in lines[2].Split(' '))
                 {
                     n.entryPorts.Add(Int32.Parse(item));
                     Console.Write($"{item}, ");
                 }
                 Console.Write(Environment.NewLine);
+                if(args.Length == 4)
+                {
+                    Console.WriteLine("SubNetworkConnection up!");
+                }
+                Console.WriteLine("RoutingController up!");
+                Console.WriteLine("CallController up!");
                 n.slots = new Dictionary<int, bool[]>();
                 foreach (int item in n.entryPorts)
                 {
@@ -99,7 +105,7 @@ namespace TSST
 
         public void listeningThread()
         {
-            Console.WriteLine("I will send data to port {0}", targetPort);
+            Console.WriteLine("Sending: {0}", targetPort);
             this.listener = new ListenerSocket(listenerPort, handlePacket);
         }
 
@@ -116,7 +122,7 @@ namespace TSST
                         string entry = query.Get("entry");
                         string[] items = entry.Split('-');
                         this.sf.addEntry(items, ref this.slots);
-                        Console.WriteLine("Updating with entry: {0}", entry);
+                        Console.WriteLine("Updating with entry: {0}-{1}-{2}", entry.Split('-')[0], entry.Split('-')[1], entry.Split('-')[3]);
                         this.sf.setSwitchingTable(this.configurationPath);
                         Thread.Yield();
                     }
@@ -157,7 +163,7 @@ namespace TSST
                     NameValueCollection query = new NameValueCollection();
                     query = request.QueryString;
                     string entry = query.Get("entry");
-                    Console.WriteLine("Removing entry: {0}", entry);
+                    Console.WriteLine("Removing entry: {0}-{1}-{2}", entry.Split('-')[0], entry.Split('-')[1], entry.Split('-')[3]);
                     string[] items = entry.Split('-');
                     Tuple<string, string, string, string> item = new Tuple<string, string, string, string>(items[0], items[1], items[2], items[3]);
                     string[] slots = items[0].Split(':');

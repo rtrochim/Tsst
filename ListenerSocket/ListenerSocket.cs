@@ -14,7 +14,7 @@ namespace TSST
         {
             lock (this)
             {
-                Console.WriteLine("I am listening on port {0}", port);
+                Console.WriteLine("Listening: {0}", port);
                 this.port = port;
                 AsynchronousSocketListener listener = new AsynchronousSocketListener(this.port);
                 listener.start(handler, port);

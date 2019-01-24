@@ -19,7 +19,7 @@ namespace TSST
 
         public void sendMessage(byte[] msg, int port)
         {
-            Console.WriteLine("Sent packet to port: {0}", port);
+            //Console.WriteLine("Sent packet to port: {0}", port);
             this.socketClient.SendMessage(msg, port);
             Console.WriteLine("══════════════════════════════════");
             Thread.Yield();

@@ -60,11 +60,12 @@ namespace TSST
     
             this.sender = new SenderSocket();
             this.client = new HttpClient();
+            Console.WriteLine("CallingPartyCallController up!");
         }
 
         public void listeningThread()
         {
-            Console.WriteLine("I will send data to port {0}", targetPort);
+            Console.WriteLine("Sending: {0}", targetPort);
             this.listener = new ListenerSocket(listenerPort, handlePacket);
         }
 
@@ -75,6 +76,7 @@ namespace TSST
                 Console.WriteLine("What you wanna do?");
                 Console.WriteLine("[0] Send data using an existing connection");
                 Console.WriteLine("[1] Establish new connection");
+                Console.WriteLine("[2] End existing connection");
                 string option = Console.ReadLine();
                 if (option == "0")
                 {
@@ -95,7 +97,13 @@ namespace TSST
                     HttpResponseMessage response = await this.client.GetAsync(string.Format("http://localhost:13000?adjacentNodeId={0}&bandwidth={1}&targetPort={2}", adjacentNodeId, bandwidth, portNumber));
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine("Manager reserved these slots " + responseBody);
+                    Console.WriteLine("Reserved slots - " + responseBody);
+                }
+                if (option == "2")
+                {
+                    Console.Write("Which target port?");
+                    string removeTargetPort = Console.ReadLine();
+                    await this.client.GetAsync($"http://localhost:13000/dropConnection?targetPort={removeTargetPort}&adjacentNodeId={this.adjacentNodeId}");
                 }
             }
 

@@ -30,14 +30,14 @@ namespace TSST
             lock (this)
             {
 
-                Console.WriteLine("Got Packet on: " + packet.nextHop.ToString() + " TargetPort: " + packet.targetPort + " EntryPort: " + entryPort);
+                Console.WriteLine("Got Packet on: " + packet.nextHop.ToString());
                 int nextHop = packet.nextHop;
                 string usedSlots = packet.usedSlots;
                 Tuple<string, string, string, string> entry = switchingTable.Find(item => Int32.Parse(item.Item2) == nextHop && usedSlots == item.Item1);
                 if (entry != null)
                 {
                     packet.nextHop = int.Parse(entry.Item4);
-
+                    Console.WriteLine("Transmitting on: " + packet.nextHop.ToString());
                     Thread.Yield();
                 }
                 else

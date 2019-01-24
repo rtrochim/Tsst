@@ -4,6 +4,8 @@ using System.Threading;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace TSST
 {
@@ -24,6 +26,7 @@ namespace TSST
         public Packet packet;
         public Dictionary<int, List<int>> interfacesMap;
         public List<Tuple<int, int>> connectionsMap;
+        public HttpClient client;
 
         static void Main(string[] args)
         {
@@ -46,7 +49,18 @@ namespace TSST
             cc.readConnections(@"..\..\..\TEST\configs\NetworkConnections.conf");
             while (true)
             {
+                Console.WriteLine("What you wanna do?");
+                Console.WriteLine("[D] Cut cable");
                 string option = Console.ReadLine();
+                if (option == "D")
+                {
+                    Console.WriteLine("Which cable to cut? (start:end)");
+                    string choice = Console.ReadLine();
+                    string response = cc.terminateConnection(choice).Result;
+                } else
+                {
+                    Console.WriteLine("Invalid option");
+                }
             }
         }
 
@@ -59,7 +73,10 @@ namespace TSST
  | |      / /\ \ |  _ <| |    |  __|   | |    | |   | |  | | |  | | |  | |
  | |____ / ____ \| |_) | |____| |____  | |____| |___| |__| | |__| | |__| |
   \_____/_/    \_\____/|______|______|  \_____|______\____/ \____/|_____/ ");
-
+            for(int i = 1; i < 15; i++)
+            {
+                Console.WriteLine("LRM up!");
+            }
             this.sender = new SenderSocket();
             for (int i = 0; i < portNums.Count; i++)
             {   
@@ -71,6 +88,7 @@ namespace TSST
             }
             this.nodesConnections = new List<Tuple<int,int>>();
             this.connectionsMap = new List<Tuple<int, int>>();
+            this.client = new HttpClient();
         }
         public void listeningThread()
         {
@@ -159,9 +177,11 @@ namespace TSST
           
         }
 
-        public void terminateConnection()
+        public async Task<string> terminateConnection(string choice)
         {
-            
+            string[] nodes = choice.Split(':');
+            await this.client.GetAsync(string.Format("http://localhost:13000/terminateConnection?first={0}&second={1}", nodes[0], nodes[1]));
+            return "OK";
         }
 
         public void addConnection()
