@@ -30,7 +30,7 @@ namespace TSST
             lock (this)
             {
 
-                Console.WriteLine("Got Packet on: " + packet.nextHop.ToString());
+                Console.WriteLine("Got data: " + packet.nextHop.ToString());
                 int nextHop = packet.nextHop;
                 string usedSlots = packet.usedSlots;
                 Tuple<string, string, string, string> entry = switchingTable.Find(item => Int32.Parse(item.Item2) == nextHop && usedSlots == item.Item1);

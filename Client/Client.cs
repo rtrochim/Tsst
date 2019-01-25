@@ -114,7 +114,7 @@ namespace TSST
             lock (this)
             {
                 packet = p;
-                Console.WriteLine(Environment.NewLine + $"Got packet with message: {packet.data}");
+                Console.WriteLine(Environment.NewLine + $"Got data: {packet.data}");
                 Thread.Yield();
                 return 0;
             }

@@ -75,7 +75,7 @@ namespace TSST
   \_____/_/    \_\____/|______|______|  \_____|______\____/ \____/|_____/ ");
             for(int i = 1; i < 15; i++)
             {
-                Console.WriteLine("LRM up!");
+                //Console.WriteLine("LRM up!");
             }
             this.sender = new SenderSocket();
             for (int i = 0; i < portNums.Count; i++)
@@ -133,7 +133,7 @@ namespace TSST
             {
                 Thread.Sleep(400);
                 packet = p;
-                Console.WriteLine("Got packet with data: {0} \n on port {1} nextHop is {2}", packet.data, port, packet.nextHop);
+                Console.WriteLine("Got data: {0} \n on port {1} nextHop is {2}", packet.data, port, packet.nextHop);
                 int targetPort = 0;
                 int targetNode = -1;
                 foreach ( Tuple<int,int> entry in connectionsMap)

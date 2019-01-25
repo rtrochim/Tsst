@@ -81,6 +81,7 @@ What to do:");
  | |  | |/ ____ \| |\  |/ ____ \ |__| | |____| | \ \ 
  |_|  |_/_/    \_\_| \_/_/    \_\_____|______|_|  \_\");
             Console.WriteLine("NetworkCallController up!");
+            Console.WriteLine("CallController up!");
             Console.WriteLine("ConnectionController up!");
             Console.WriteLine("RoutingController up!");
             this.adjacentNodes = new List<Tuple<int, int>>();

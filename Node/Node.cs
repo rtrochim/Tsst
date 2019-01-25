@@ -47,19 +47,16 @@ namespace TSST
             Node n = new Node(args[0]);
             try
             {
-                Console.Write("My SNPs: ");
+                Console.Write("My interfaces: ");
                 foreach (string item in lines[2].Split(' '))
                 {
                     n.entryPorts.Add(Int32.Parse(item));
                     Console.Write($"{item}, ");
+                    Console.WriteLine("LinkResourceManager up!");
                 }
                 Console.Write(Environment.NewLine);
-                if(args.Length == 4)
-                {
-                    Console.WriteLine("SubNetworkConnection up!");
-                }
                 Console.WriteLine("RoutingController up!");
-                Console.WriteLine("CallController up!");
+                Console.WriteLine("ConnectionController up!");
                 n.slots = new Dictionary<int, bool[]>();
                 foreach (int item in n.entryPorts)
                 {
@@ -192,7 +189,7 @@ namespace TSST
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("ERROR: Cannot commutate this Packet!");
+                    Console.WriteLine("ERROR: Cannot commutate this!");
                     Console.WriteLine(e.ToString());
                     Thread.Yield();
                 }
